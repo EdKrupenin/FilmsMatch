@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ShapeAppearanceOverlay.App.ImageButton" parent="">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="TvStyle" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textSize">16sp</item>
+    </style>
+</resources>

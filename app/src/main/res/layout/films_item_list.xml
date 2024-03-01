@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/placeholder_poster"
+    android:padding="16dp">
+
+    <!-- Кнопка закрытия -->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:src="@drawable/ic_close"
+        app:backgroundTint="?attr/colorSurface"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- Строка с названием фильма -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/title_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAlignment="viewStart"
+        android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/rating_year_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Название фильма" />
+
+    <!-- Строка с рейтингом и годом создания -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/rating_year_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/title_text"
+        app:layout_constraintStart_toStartOf="@id/title_text"
+        app:layout_constraintTop_toBottomOf="@id/title_text"
+        tools:text="8.5 • 2022" />
+
+    <!-- Строка с жанрами -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/genres_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        tools:text="Драма, Комедия"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/rating_year_text"
+        app:layout_constraintStart_toStartOf="@id/rating_year_text"
+        app:layout_constraintTop_toBottomOf="@id/rating_year_text" />
+
+    <!-- Кнопки "Не сегодня" и "То, что надо" -->
+    <LinearLayout
+        android:id="@+id/buttons_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/genres_text"
+        app:layout_constraintStart_toStartOf="@id/genres_text"
+        app:layout_constraintTop_toBottomOf="@id/genres_text">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/not_today_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:text="Не сегодня"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/red" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/just_right_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="То, что надо"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/blue" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

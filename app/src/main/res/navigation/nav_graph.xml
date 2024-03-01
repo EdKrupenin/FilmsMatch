@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentStartScreen">
+    <fragment
+        android:id="@+id/fragmentStartScreen"
+        android:name="com.example.filmsmatch.FragmentStartScreen"
+        tools:layout="@layout/fragment_start_screen"
+        android:label="FragmentStartScreen">
+        <action
+            android:id="@+id/action_fragmentStartScreen_to_fragmentGenreSelection"
+            app:destination="@id/fragmentGenreSelection" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentGenreSelection"
+        android:name="com.example.filmsmatch.FragmentGenreSelection"
+        tools:layout="@layout/fragment_genre_selection"
+        android:label="FragmentGenreSelection" >
+        <action
+            android:id="@+id/action_fragmentGenreSelection_to_fragmentRecycler"
+            app:destination="@id/fragmentRecycler" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentRecycler"
+        tools:layout="@layout/fragment_recycler"
+        android:name="com.example.filmsmatch.FragmentRecycler"
+        android:label="FragmentRecycler" />
+
+    <!-- Действие для перехода на стартовый экран -->
+    <action
+        android:id="@+id/action_any_to_start_screen"
+        app:destination="@id/fragmentStartScreen" />
+</navigation>
