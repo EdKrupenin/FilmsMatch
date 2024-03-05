@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toTopOf="@id/rating_year_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Название фильма" />
+        tools:text="FURY / ЯРОСТЬ" />
 
     <!-- Строка с рейтингом и годом создания -->
     <com.google.android.material.textview.MaterialTextView
@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="@id/title_text"
         app:layout_constraintStart_toStartOf="@id/title_text"
         app:layout_constraintTop_toBottomOf="@id/title_text"
-        tools:text="8.5 • 2022" />
+        tools:text="IMDB 8.5 • 2018" />
 
     <!-- Строка с жанрами -->
     <com.google.android.material.textview.MaterialTextView
@@ -53,7 +53,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        tools:text="Драма, Комедия"
+        tools:text="Драма • Боевик"
         android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@id/rating_year_text"

@@ -6,7 +6,7 @@
     app:startDestination="@id/fragmentStartScreen">
     <fragment
         android:id="@+id/fragmentStartScreen"
-        android:name="com.example.filmsmatch.FragmentStartScreen"
+        android:name="com.example.filmsmatch.start.FragmentStartScreen"
         tools:layout="@layout/fragment_start_screen"
         android:label="FragmentStartScreen">
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentGenreSelection"
-        android:name="com.example.filmsmatch.FragmentGenreSelection"
+        android:name="com.example.filmsmatch.genre.FragmentGenreSelection"
         tools:layout="@layout/fragment_genre_selection"
         android:label="FragmentGenreSelection" >
         <action
@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/fragmentRecycler"
         tools:layout="@layout/fragment_recycler"
-        android:name="com.example.filmsmatch.FragmentRecycler"
+        android:name="com.example.filmsmatch.list.FragmentRecycler"
         android:label="FragmentRecycler" />
 
     <!-- Действие для перехода на стартовый экран -->

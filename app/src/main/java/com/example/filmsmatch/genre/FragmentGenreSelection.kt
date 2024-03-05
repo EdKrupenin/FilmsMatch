@@ -1,11 +1,11 @@
-package com.example.filmsmatch
+package com.example.filmsmatch.genre
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.filmsmatch.R
 import com.example.filmsmatch.databinding.FragmentGenreSelectionBinding
-
 
 class FragmentGenreSelection : Fragment(R.layout.fragment_genre_selection) {
 
