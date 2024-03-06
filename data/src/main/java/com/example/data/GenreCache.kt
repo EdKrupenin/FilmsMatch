@@ -15,12 +15,11 @@ class GenreCacheManager @Inject constructor() {
     val genreCache: StateFlow<GenreData> get() = _genreCache.asStateFlow()
 
     /**
-     * Функция для добавления выбранного жанра в кэш
-     * @param genreData: GenreDomain - выбранный жанр
+     * Обновляет список выбранных жанров в кэше.
+     * @param genres список выбранных жанров для обновления.
      */
-    fun setGenre(genreData: GenreDomain) {
-        _genreCache.value =
-            _genreCache.value.copy(selectedGenres = _genreCache.value.selectedGenres.plus(genreData))
+    fun updateSelectedGenres(genres: List<GenreDomain>) {
+        _genreCache.value = _genreCache.value.copy(selectedGenres = genres)
     }
 
     /**

@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.filmsmatch.R
 import com.example.filmsmatch.databinding.FragmentStartScreenBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FragmentStartScreen : Fragment(R.layout.fragment_start_screen) {
 
     private lateinit var binding: FragmentStartScreenBinding

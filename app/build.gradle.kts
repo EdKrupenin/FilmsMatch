@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.androidxNavigation)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -39,19 +40,21 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
-    // Зависимость для интеграции Hilt в приложение Android
-    implementation(libs.hilt.android)
     implementation(project(":data"))
     implementation(project(":domain"))
+    // Зависимость для интеграции Hilt в приложение Android
+    implementation(libs.hilt.android)
     // Плагин kapt для обработки аннотаций Hilt во время компиляции
     kapt(libs.hilt.android.compiler)
-    // Зависимость для интеграции ViewModel с Hilt
-    implementation(libs.hilt.lifecycle.viewmodel)
-    // Плагин kapt для обработки аннотаций Hilt во время компиляции
-    kapt(libs.hilt.compiler)
+    // Зависимость для скелетонов
+    implementation(libs.shimmer)
     // Зависимость для использования Kotlin Extensions в AndroidX
     implementation(libs.androidx.core.ktx)
     // Зависимость для использования AppCompatActivity из AndroidX

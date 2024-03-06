@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -40,10 +41,6 @@ dependencies {
     implementation(libs.hilt.android)
     // Плагин kapt для обработки аннотаций Hilt во время компиляции
     kapt(libs.hilt.android.compiler)
-    // Зависимость для интеграции ViewModel с Hilt
-    implementation(libs.hilt.lifecycle.viewmodel)
-    // Плагин kapt для обработки аннотаций Hilt во время компиляции
-    kapt(libs.hilt.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

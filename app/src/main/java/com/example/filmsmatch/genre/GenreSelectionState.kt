@@ -7,7 +7,8 @@ sealed class GenreSelectionState {
     data class Loaded(
         val genres: List<GenreDomain>, // Список доступных жанров
         val selectedGenres: List<GenreDomain>, // Список выбранных жанров
-        val sortingOrder: String // Порядок сортировки
+        val sortingOrder: String, // Порядок сортировки
+        val accessNextButton: Boolean = false
     ) : GenreSelectionState()
 
     data class Error(val message: String) : GenreSelectionState()
