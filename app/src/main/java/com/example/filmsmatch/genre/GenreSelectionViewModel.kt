@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.GenreCacheManager
 import com.example.data.GenreDomain
-import com.example.domain.GenreRepositoryImpl
+import com.example.domain.GenreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GenreSelectionViewModel @Inject constructor(
     private val genreCacheManager: GenreCacheManager,
-    private val repository: GenreRepositoryImpl,
+    private val repository: GenreRepository,
 ) : ViewModel() {
 
     private val _genreSelectionState =

@@ -1,3 +1,5 @@
+package com.example.domain
+
 import com.example.data.MovieDomain
 import com.example.data.network.movie.MoviesByGenresApiService
 import com.example.data.network.movie.toMovieDomain
@@ -33,7 +35,7 @@ class MovieRepositoryImpl @Inject constructor(private val apiService: MoviesByGe
     override suspend fun getMovie(genres: String, order: String, page: Int): MoviePage {
         // Retrieve movie data from the API service
         val genresResponse =
-            apiService.getMoviesByGenres(genres = genres, order = order, page = page)
+           apiService.getMoviesByGenres(genres = genres, order = order, page = page)
         // Map movie API response objects to MovieDomain objects
         val movies = genresResponse.items.map { it.toMovieDomain() }
         // Return MoviePage with movies list and current page number

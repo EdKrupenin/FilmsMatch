@@ -1,11 +1,11 @@
 package com.example.filmsmatch.list
 
-import MovieRepositoryImpl
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.GenreCacheManager
 import com.example.data.MovieCacheManager
+import com.example.domain.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +17,7 @@ const val ORDER_RATING = "RATING"
 class FragmentRecyclerViewModel @Inject constructor(
     private val genreCacheManager: GenreCacheManager,
     private val movieCacheManager: MovieCacheManager,
-    private val repository: MovieRepositoryImpl,
+    private val repository: MovieRepository,
 ) : ViewModel() {
     private val _filmListState =
         MutableStateFlow<FilmListState>(FilmListState.Loading)
@@ -37,7 +37,8 @@ class FragmentRecyclerViewModel @Inject constructor(
                 if (selectedGenres.isNotEmpty()) {
                     val genresString = selectedGenres.joinToString(",") { it.id }
                     // Получаем текущий номер страницы из кэша фильмов, если он есть, иначе используем 1
-                    val currentPage = movieCacheManager.movieCache.value.currentPage
+                    var currentPage = movieCacheManager.movieCache.value.currentPage ?: 1
+                    if(currentPage <= 0) currentPage = 1
                     // Получаем список фильмов с текущей страницы и обновляем кэш
                     val moviePage = repository.getMovie(genresString, ORDER_RATING, currentPage)
                     movieCacheManager.updateMovieData(moviePage.movies, moviePage.currentPage)

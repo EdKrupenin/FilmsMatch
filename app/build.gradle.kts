@@ -55,6 +55,10 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     // Зависимость для скелетонов
     implementation(libs.shimmer)
+
+    implementation(libs.picasso)
+
+    implementation(libs.viewpager)
     // Зависимость для использования Kotlin Extensions в AndroidX
     implementation(libs.androidx.core.ktx)
     // Зависимость для использования AppCompatActivity из AndroidX

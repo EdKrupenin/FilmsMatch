@@ -23,6 +23,9 @@ serialization = "1.6.3"
 retrofit = "2.9.0"
 converter-gson = "2.9.0"
 shimmer = "0.5.0"
+logging-interceptor  = "4.9.0"
+picasso = "2.71828"
+viewpager = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,7 +50,10 @@ hilt-navigation-fragment = { group = "androidx.hilt", name = "hilt-navigation-fr
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-gson = {group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converter-gson"}
+logging-interceptor = {group = "com.squareup.okhttp3",  name = "logging-interceptor", version.ref = "logging-interceptor"}
 shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer"}
+picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso"}
+viewpager = { group = "androidx.viewpager2",  name = "viewpager2", version.ref = "viewpager"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "androidApplicationPlugin" }
