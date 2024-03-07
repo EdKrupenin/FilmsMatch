@@ -57,14 +57,14 @@ class GenreSelectionViewModel @Inject constructor(
                 } else {
                     // Если данных в кэше нет, загружаем их из репозитория
                     val genres = repository.getGenres()
+                    // Обновляем данные в genreCacheManager
+                    genreCacheManager.updateGenreData(genres)
                     _genreSelectionState.value = GenreSelectionState.Loaded(
-                        genres,
+                        genreCacheManager.genreCache.value.genresFromNetwork,
                         selectedGenres,
                         "Default",
                         selectedGenres.isNotEmpty()
                     )
-                    // Обновляем данные в genreCacheManager
-                    genreCacheManager.updateGenreData(genres)
                 }
             } catch (e: Exception) {
                 e.message?.let { Log.d("GenreSelectionViewModel", it) }

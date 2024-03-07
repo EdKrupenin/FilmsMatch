@@ -1,5 +1,7 @@
 package com.example.data.network
 
+import com.example.data.network.genre.GenresApiService
+import com.example.data.network.movie.MoviesByGenresApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,17 +13,20 @@ import java.util.concurrent.TimeUnit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+/**
+ * Dagger module for providing network dependencies.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "https://api.kinopoisk.dev"
+    private const val BASE_URL = "https://kinopoiskapiunofficial.tech/"
 
     private val interceptor: Interceptor = Interceptor { chain ->
         val request = chain.request().newBuilder()
             .addHeader("Content-Type", "application/json")
             .addHeader("accept", "application/json")
-            .addHeader("X-API-KEY", "JHG5JX8-N9D4J2J-NAJW15B-NZRQQYA").build()
+            .addHeader("X-API-KEY", "22aac2f5-6099-4f82-ac29-ebd00271936c").build()
         chain.proceed(request)
     }
 
@@ -32,6 +37,9 @@ object NetworkModule {
         .addInterceptor(interceptor)
         .build()
 
+    /**
+     * Provides a Retrofit instance.
+     */
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
@@ -42,9 +50,21 @@ object NetworkModule {
             .build()
     }
 
+    /**
+     * Provides an implementation of [GenresApiService].
+     */
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ApiService {
-        return retrofit.create(ApiService::class.java)
+    fun provideGenresApiService(retrofit: Retrofit): GenresApiService {
+        return retrofit.create(GenresApiService::class.java)
+    }
+
+    /**
+     * Provides an implementation of [MoviesByGenresApiService].
+     */
+    @Singleton
+    @Provides
+    fun provideMovieApiService(retrofit: Retrofit): MoviesByGenresApiService {
+        return retrofit.create(MoviesByGenresApiService::class.java)
     }
 }

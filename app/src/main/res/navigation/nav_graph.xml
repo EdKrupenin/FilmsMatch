@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/fragmentRecycler"
         tools:layout="@layout/fragment_recycler"
-        android:name="com.example.filmsmatch.list.FragmentRecycler"
+        android:name="com.example.filmsmatch.list.FilmListFragment"
         android:label="FragmentRecycler" />
 
     <!-- Действие для перехода на стартовый экран -->
