@@ -1,8 +1,9 @@
 package com.example.filmsmatch.list
 
 import com.example.data.MovieDomain
+import com.example.filmsmatch.base.BaseState
 
-sealed class FilmListState {
+sealed class FilmListState : BaseState(){
     object Loading : FilmListState()
     data class Success(
         val films: List<MovieDomain>, // Список доступных фильмов

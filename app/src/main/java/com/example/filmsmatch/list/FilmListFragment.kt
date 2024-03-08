@@ -1,51 +1,33 @@
 package com.example.filmsmatch.list
 
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.filmsmatch.R
+import com.example.filmsmatch.base.BaseFragment
 import com.example.filmsmatch.databinding.FragmentRecyclerBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 private const val VISIBLE_THRESHOLD = 5
+
 @AndroidEntryPoint
-class FilmListFragment : Fragment(R.layout.fragment_recycler) {
-    private var _binding: FragmentRecyclerBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: FragmentRecyclerViewModel by viewModels()
+class FilmListFragment : BaseFragment<FragmentRecyclerBinding, FilmListViewModel, FilmListState>(
+    FragmentRecyclerBinding::inflate
+) {
+
+    override val viewModel: FilmListViewModel by viewModels()
     private val filmAdapter by lazy {
         FilmListAdapter()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        _binding = FragmentRecyclerBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // Обработка нажатия на кнопку назад
+    override fun setupUI() {
+        setupRecyclerView()
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
-        setupRecyclerView()
-        observeViewModel()
     }
 
     private fun setupRecyclerView() {
@@ -85,22 +67,26 @@ class FilmListFragment : Fragment(R.layout.fragment_recycler) {
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
     }
 
-    private fun observeViewModel() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.filmListState.collect { state ->
-                    when (state) {
-                        is FilmListState.Loading -> showLoadingState()
-                        is FilmListState.Success -> showLoadedState(state)
-                        is FilmListState.Error -> showErrorState()
-                        is FilmListState.Edge -> showErrorState()
-                    }
-                }
+    override suspend fun observeViewModel() {
+        viewModel.stateFlow.collect { state ->
+            when (state) {
+                is FilmListState.Loading -> showLoading()
+                is FilmListState.Success -> showSuccess(state)
+                is FilmListState.Error -> showError(state)
+                is FilmListState.Edge -> showError(state)
             }
         }
     }
 
-    private fun showLoadedState(state: FilmListState.Success) {
+    override fun showLoading() {
+        Log.e("FragmentRecyclerViewModel", "Loading")
+        binding.errorLayout.root.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+        startShimmerAnimation()
+    }
+
+    override fun showSuccess(success: FilmListState) {
+        val state = success as FilmListState.Success
         binding.errorLayout.root.visibility = View.GONE
         binding.shimmerContainer.root.visibility = View.GONE
         binding.recyclerView.visibility = View.VISIBLE
@@ -108,18 +94,11 @@ class FilmListFragment : Fragment(R.layout.fragment_recycler) {
         filmAdapter.submitList(state.films)
     }
 
-    private fun showErrorState() {
+    override fun showError(state: FilmListState) {
         Log.d("FragmentRecyclerViewModel", "Error")
         binding.errorLayout.root.visibility = View.VISIBLE
         binding.shimmerContainer.root.visibility = View.GONE
         binding.recyclerView.visibility = View.GONE
-    }
-
-    private fun showLoadingState() {
-        Log.e("FragmentRecyclerViewModel", "Loading")
-        binding.errorLayout.root.visibility = View.GONE
-        binding.recyclerView.visibility = View.GONE
-        startShimmerAnimation()
     }
 
     private fun startShimmerAnimation() {
@@ -128,11 +107,6 @@ class FilmListFragment : Fragment(R.layout.fragment_recycler) {
 
     private fun stopShimmerAnimation() {
         binding.shimmerContainer.shimmerLayout.stopShimmer() // Останавливаем анимацию shimmer
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null // Очистка ссылки на binding для избежания утечек памяти
     }
 }
 

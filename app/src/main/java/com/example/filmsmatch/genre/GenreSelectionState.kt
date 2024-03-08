@@ -2,8 +2,9 @@ package com.example.filmsmatch.genre
 
 import com.example.data.GenreDomain
 import com.example.data.SortingOption
+import com.example.filmsmatch.base.BaseState
 
-sealed class GenreSelectionState {
+sealed class GenreSelectionState : BaseState() {
     data object Loading : GenreSelectionState()
     data class Loaded(
         val genres: List<GenreDomain>, // Список доступных жанров

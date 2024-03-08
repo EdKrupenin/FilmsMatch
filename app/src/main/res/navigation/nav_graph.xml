@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentGenreSelection"
-        android:name="com.example.filmsmatch.genre.FragmentGenreSelection"
+        android:name="com.example.filmsmatch.genre.GenreSelectionFragment"
         tools:layout="@layout/fragment_genre_selection"
         android:label="FragmentGenreSelection" >
         <action

@@ -1,65 +1,64 @@
 package com.example.filmsmatch.genre
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.data.GenreDomain
+import com.example.filmsmatch.base.BaseFragment
 import com.example.filmsmatch.R
 import com.example.filmsmatch.databinding.FragmentGenreSelectionBinding
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collectLatest
 import kotlin.random.Random
 
 @AndroidEntryPoint
-class FragmentGenreSelection : Fragment(R.layout.fragment_genre_selection) {
-
-    private lateinit var binding: FragmentGenreSelectionBinding
-    private val genreViewModel: GenreSelectionViewModel by viewModels()
-    private val navController by lazy { findNavController() }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // Используем привязки для доступа к элементам пользовательского интерфейса
-        binding = FragmentGenreSelectionBinding.bind(view)
+class GenreSelectionFragment :
+    BaseFragment<FragmentGenreSelectionBinding, GenreSelectionViewModel, GenreSelectionState>(
+        FragmentGenreSelectionBinding::inflate
+    ) {
+    override val viewModel: GenreSelectionViewModel by viewModels()
+    override fun setupUI() {
         binding.continueButton.setOnClickListener {
-            // Выполняем переход к целевому фрагменту с помощью экшена
-            navController.navigate(R.id.action_fragmentGenreSelection_to_fragmentRecycler)
+            findNavController().navigate(R.id.action_fragmentGenreSelection_to_fragmentRecycler)
         }
         binding.toolbar.setOnClickListener {
-            // Выполняем переход к целевому фрагменту с помощью экшена
-            navController.navigate(R.id.action_any_to_start_screen)
+            findNavController().navigate(R.id.action_any_to_start_screen)
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                genreViewModel.genreSelectionState.collect { genreState ->
-                    when (genreState) {
-                        is GenreSelectionState.Error -> showErrorState()
-                        is GenreSelectionState.Loaded -> showLoadedState(genreState)
-                        GenreSelectionState.Loading -> showLoadingState()
-                    }
-                }
+    }
+
+    override suspend fun observeViewModel() {
+        viewModel.stateFlow.collectLatest { state ->
+            when (state) {
+                is GenreSelectionState.Loading -> showLoading()
+                is GenreSelectionState.Loaded -> showSuccess(state)
+                is GenreSelectionState.Error -> showError(state)
             }
         }
     }
 
     // Показывает разметку ошибки и скрывает ShimmerFrameLayout и ChipGroup
-    private fun showErrorState() {
+    override fun showError(state: GenreSelectionState) {
         binding.continueButton.isEnabled = false
         binding.errorLayout.root.visibility = View.VISIBLE
         binding.nestedScroll.visibility = View.GONE
         binding.errorLayout.retry.setOnClickListener { retryButton() }
     }
 
+    // Показывает состояние загрузки: запускает анимацию ShimmerFrameLayout и добавляет пустые чипы
+    override fun showLoading() {
+        binding.continueButton.isEnabled = false
+        binding.errorLayout.root.visibility = View.GONE
+        binding.nestedScroll.visibility = View.VISIBLE
+        startShimmerAnimation()
+        addEmptyChips(20)
+    }
+
     // Показывает загруженные жанры и останавливает анимацию ShimmerFrameLayout
-    private fun showLoadedState(genreState: GenreSelectionState.Loaded) {
+    override fun showSuccess(state: GenreSelectionState) {
+        val genreState = state as GenreSelectionState.Loaded
         binding.errorLayout.root.visibility = View.GONE
         binding.shimmerContainer.visibility = View.GONE
         binding.genreChipGroup.visibility = View.VISIBLE
@@ -77,17 +76,8 @@ class FragmentGenreSelection : Fragment(R.layout.fragment_genre_selection) {
         binding.autoCompleteTextView.setAdapter(adapter)
         binding.autoCompleteTextView.setText(genreState.sortingOrder.description, false)
         binding.autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
-            genreViewModel.updateSelectedOrder(position)
+            viewModel.updateSelectedOrder(position)
         }
-    }
-
-    // Показывает состояние загрузки: запускает анимацию ShimmerFrameLayout и добавляет пустые чипы
-    private fun showLoadingState() {
-        binding.continueButton.isEnabled = false
-        binding.errorLayout.root.visibility = View.GONE
-        binding.nestedScroll.visibility = View.VISIBLE
-        startShimmerAnimation()
-        addEmptyChips(20)
     }
 
     private fun startShimmerAnimation() {
@@ -99,7 +89,7 @@ class FragmentGenreSelection : Fragment(R.layout.fragment_genre_selection) {
     }
 
     private fun retryButton() {
-        genreViewModel.loadGenres() // Пытаемся загрузить жанры снова
+        viewModel.loadGenres() // Пытаемся загрузить жанры снова
         // Скрываем разметку ошибки и показываем ShimmerFrameLayout и ChipGroup
         binding.errorLayout.root.visibility = View.GONE
         binding.shimmerContainer.visibility = View.VISIBLE
@@ -132,7 +122,7 @@ class FragmentGenreSelection : Fragment(R.layout.fragment_genre_selection) {
             chip.isCheckable = true
             chip.isChecked = selectedGenresList.contains(genre)
             chip.setOnCheckedChangeListener { _, isChecked ->
-                genreViewModel.updateSelectedGenres(genre, isChecked)
+                viewModel.updateSelectedGenres(genre, isChecked)
             }
             binding.genreChipGroup.addView(chip)
         }
