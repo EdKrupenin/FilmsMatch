@@ -13,8 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-const val ORDER_RATING = "RATING"
-
 @HiltViewModel
 class FragmentRecyclerViewModel @Inject constructor(
     genreCacheManager: GenreCacheManager,
@@ -27,6 +25,7 @@ class FragmentRecyclerViewModel @Inject constructor(
     // Получаем id жанра из кэша
     private val genresString: String =
         genreCacheManager.genreCache.value.selectedGenres.joinToString(",") { it.id }
+    private val orderString : String = genreCacheManager.genreCache.value.selectedOrder?.value.toString()
     val filmListState: StateFlow<FilmListState> = _filmListState
 
     init {
@@ -43,14 +42,14 @@ class FragmentRecyclerViewModel @Inject constructor(
                     var currentPage = movieCacheManager.movieCache.value.currentPage ?: 1
                     if (currentPage <= 0) currentPage = 1
                     // Получаем список фильмов с текущей страницы и обновляем кэш
-                    val moviePage = repository.getMovie(genresString, ORDER_RATING, currentPage)
+                    val moviePage = repository.getMovie(genresString, orderString, currentPage)
                     movieCacheManager.updateMovieData(moviePage.movies, moviePage.currentPage)
                     _filmListState.value =
                         FilmListState.Success(
                             moviePage.movies,
                             moviePage.currentPage,
                             moviePage.totalPage,
-                            ORDER_RATING
+                            orderString
                         )
                 } else {
                     _filmListState.value = FilmListState.Error("No selected genres")
@@ -103,7 +102,7 @@ class FragmentRecyclerViewModel @Inject constructor(
                 _filmListState.value =
                     FilmListState.Loading // Перед загрузкой показываем состояние загрузки
                 try {
-                    val moviePage = repository.getMovie(genresString, ORDER_RATING, nextPage)
+                    val moviePage = repository.getMovie(genresString, orderString, nextPage)
                     movieCacheManager.updateMovieData(moviePage.movies, moviePage.currentPage)
                     val updatedList = currentState.films.toMutableList().apply {
                         addAll(moviePage.movies)
@@ -112,7 +111,7 @@ class FragmentRecyclerViewModel @Inject constructor(
                         updatedList,
                         moviePage.currentPage,
                         moviePage.totalPage,
-                        ORDER_RATING
+                        orderString
                     )
                 } catch (e: Exception) {
                     e.message?.let { Log.d("FragmentRecyclerViewModel", it) }

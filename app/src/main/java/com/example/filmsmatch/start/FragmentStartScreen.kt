@@ -3,6 +3,7 @@ package com.example.filmsmatch.start
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.filmsmatch.R
@@ -31,6 +32,20 @@ class FragmentStartScreen : Fragment(R.layout.fragment_start_screen) {
         binding.rouletteModeButton.setOnClickListener {
             showToDo()
         }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Если это ваш стартовый фрагмент, закройте приложение
+                if (isEnabled) {
+                    activity?.finish()
+                } else {
+                    // Иначе, обработайте нажатие кнопки назад стандартным образом
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun showToDo() {

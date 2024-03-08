@@ -2,6 +2,7 @@ package com.example.domain
 
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -13,14 +14,18 @@ abstract class DomainModule {
     @Binds // Указывает Hilt связь между интерфейсом и его реализацией
     @Singleton // Опционально, указывает, что зависимость должна быть синглтоном
     abstract fun bindMovieRepository(
-        movieRepositoryImpl: MovieRepositoryImpl
+        movieRepositoryImpl: MovieRepositoryImpl,
     ): MovieRepository
 
     @Binds // Указывает Hilt связь между интерфейсом и его реализацией
     @Singleton // Опционально, указывает, что зависимость должна быть синглтоном
     abstract fun bindGenreRepository(
-        genreRepositoryImpl: GenreRepositoryImpl
+        genreRepositoryImpl: GenreRepositoryImpl,
     ): GenreRepository
 
-
+    @Binds
+    @Singleton
+    abstract fun bindSortingOptions(
+        sortingOptionsProviderImpl: SortingOptionsProviderImpl,
+    ): SortingOptionsProvider
 }

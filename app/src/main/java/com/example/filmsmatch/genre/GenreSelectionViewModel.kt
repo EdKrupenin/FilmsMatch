@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.GenreCacheManager
 import com.example.data.GenreDomain
 import com.example.domain.GenreRepository
+import com.example.domain.SortingOptionsProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,22 +17,13 @@ import javax.inject.Inject
 class GenreSelectionViewModel @Inject constructor(
     private val genreCacheManager: GenreCacheManager,
     private val repository: GenreRepository,
+    private val sortingOptionsProvider: SortingOptionsProvider,
 ) : ViewModel() {
 
     private val _genreSelectionState =
         MutableStateFlow<GenreSelectionState>(GenreSelectionState.Loading)
     val genreSelectionState: StateFlow<GenreSelectionState> = _genreSelectionState
 
-    /*val genreViewState: StateFlow<GenreSelectionState> = genreCacheManager.genreCache.map { render(it) }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, render(genreCacheManager.genreCache.value))
-
-    private fun render(data: GenreData): GenreSelectionState {
-        return when {
-            data.genresFromNetwork.isEmpty() -> GenreSelectionState.Loading
-            data.selectedGenres.isEmpty() -> GenreSelectionState.Loaded(data.genresFromNetwork, emptyList(), "Default")
-            else -> GenreSelectionState.Loaded(data.genresFromNetwork, data.selectedGenres, "Default")
-        }
-    }*/
     init {
         loadGenres()
     }
@@ -51,25 +43,45 @@ class GenreSelectionViewModel @Inject constructor(
                     _genreSelectionState.value = GenreSelectionState.Loaded(
                         genresFromNetwork,
                         selectedGenres,
-                        "Default",
-                        selectedGenres.isNotEmpty()
+                        sortingOptionsProvider.sortingOptions.first(),
+                        selectedGenres.isNotEmpty(),
+                        true,
+                        sortingOptionsProvider.sortingOptions
                     )
                 } else {
                     // Если данных в кэше нет, загружаем их из репозитория
                     val genres = repository.getGenres()
+                    val order = genreCacheManager.genreCache.value.selectedOrder
+                        ?: sortingOptionsProvider.sortingOptions.first()
                     // Обновляем данные в genreCacheManager
-                    genreCacheManager.updateGenreData(genres)
+                    genreCacheManager.updateGenreData(genres, order)
                     _genreSelectionState.value = GenreSelectionState.Loaded(
                         genreCacheManager.genreCache.value.genresFromNetwork,
                         selectedGenres,
-                        "Default",
-                        selectedGenres.isNotEmpty()
+                        sortingOptionsProvider.sortingOptions.first(),
+                        selectedGenres.isNotEmpty(),
+                        true,
+                        sortingOptionsProvider.sortingOptions
                     )
                 }
             } catch (e: Exception) {
                 e.message?.let { Log.d("GenreSelectionViewModel", it) }
                 _genreSelectionState.value =
                     GenreSelectionState.Error("Failed to load genres: ${e.message}")
+            }
+        }
+    }
+
+    fun updateSelectedOrder(position: Int) {
+        viewModelScope.launch {
+            val currentState = _genreSelectionState.value
+            if (currentState is GenreSelectionState.Loaded) {
+                val updatedSelectedItem = currentState.sortingOptions[position]
+                val newState = currentState.copy(sortingOrder = updatedSelectedItem)
+                _genreSelectionState.value = newState
+                // Обновляем genreCacheManager
+                genreCacheManager.updateSelectedOrder(updatedSelectedItem)
+                _genreSelectionState.value = newState
             }
         }
     }

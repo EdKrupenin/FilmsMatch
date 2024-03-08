@@ -3,6 +3,7 @@ package com.example.filmsmatch.genre
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -65,6 +66,19 @@ class FragmentGenreSelection : Fragment(R.layout.fragment_genre_selection) {
         stopShimmerAnimation()
         populateChipGroup(genreState.genres, genreState.selectedGenres)
         binding.continueButton.isEnabled = genreState.accessNextButton
+        updateOrderButton(genreState)
+    }
+
+    private fun updateOrderButton(genreState: GenreSelectionState.Loaded) {
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            genreState.sortingOptions.map { it.description })
+        binding.autoCompleteTextView.setAdapter(adapter)
+        binding.autoCompleteTextView.setText(genreState.sortingOrder.description, false)
+        binding.autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+            genreViewModel.updateSelectedOrder(position)
+        }
     }
 
     // Показывает состояние загрузки: запускает анимацию ShimmerFrameLayout и добавляет пустые чипы

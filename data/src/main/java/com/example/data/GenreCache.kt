@@ -9,7 +9,7 @@ import javax.inject.Inject
 @ActivityRetainedScoped
 class GenreCacheManager @Inject constructor() {
     // Кэш жанров, представленный в виде MutableStateFlow
-    private val _genreCache = MutableStateFlow(GenreData(emptyList(), emptyList()))
+    private val _genreCache = MutableStateFlow(GenreData(emptyList(), emptyList(), null))
 
     // Публичный доступ к кэшу жанров через StateFlow
     val genreCache: StateFlow<GenreData> get() = _genreCache.asStateFlow()
@@ -25,9 +25,18 @@ class GenreCacheManager @Inject constructor() {
     /**
      * Функция для обновления данных о жанрах из сети
      * @param updateList: List<GenreDomain> - список жанров из сети
+     * @param order - вариант сортировки по умолчанию
      */
-    fun updateGenreData(updateList: List<GenreDomain>) {
-        _genreCache.value = _genreCache.value.copy(genresFromNetwork = updateList)
+    fun updateGenreData(updateList: List<GenreDomain>, order: SortingOption) {
+        _genreCache.value = _genreCache.value.copy(genresFromNetwork = updateList, selectedOrder = order)
+    }
+
+    /**
+     * Функция для обновления выбранного варианта сортировки
+     * @param order - выбранный вариант сортировки
+     */
+    fun updateSelectedOrder(order: SortingOption) {
+        _genreCache.value = _genreCache.value.copy(selectedOrder = order)
     }
 }
 
@@ -42,4 +51,5 @@ class GenreCacheManager @Inject constructor() {
 data class GenreData(
     val genresFromNetwork: List<GenreDomain>,
     val selectedGenres: List<GenreDomain>,
+    val selectedOrder: SortingOption?
 )

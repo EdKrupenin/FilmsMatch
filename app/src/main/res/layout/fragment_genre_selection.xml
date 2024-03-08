@@ -8,50 +8,44 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator"
         app:title="Выбор жанров"
-        app:titleCentered="true"
-        app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:titleCentered="true" />
 
     <!-- Строка "Порядок выдачи" -->
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/sorting_order_label"
-        android:layout_width="wrap_content"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/sorting_order_text_input_layout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="150dp"
-        android:text="Порядок выдачи"
-        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <!-- Кнопка с выпадающим меню -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/sorting_button"
-        style="@style/Widget.Material3.Button.TextButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="25dp"
-        android:icon="@drawable/ic_baseline_arrow_drop_down_24"
-        android:text="Случайный"
-        app:iconGravity="textEnd"
-        app:iconSize="24dp"
-        app:iconTint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/sorting_order_label"
-        app:layout_constraintTop_toTopOf="@id/sorting_order_label" />
+        android:hint="Порядок выдачи"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <AutoCompleteTextView
+            android:id="@+id/auto_complete_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:labelFor="@id/sorting_order_text_input_layout"
+            app:simpleItems="@array/simple_items" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <include
-        layout="@layout/fragment_error"
         android:id="@+id/error_layout"
+        layout="@layout/fragment_error"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/continue_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sorting_button" />
+        app:layout_constraintTop_toBottomOf="@id/sorting_order_text_input_layout" />
 
     <!-- Область с чипами -->
     <androidx.core.widget.NestedScrollView
@@ -60,10 +54,10 @@
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/continue_button"
+        app:layout_constraintBottom_toTopOf="@id/continue_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sorting_button">
+        app:layout_constraintTop_toBottomOf="@+id/sorting_order_text_input_layout">
 
         <FrameLayout
             android:layout_width="match_parent"

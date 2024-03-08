@@ -5,25 +5,24 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import dagger.hilt.android.AndroidEntryPoint
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Устанавливаем макет для активити из файла activity_main.xml
+        setContentView(R.layout.activity_main)
 
         // Включаем "Edge-to-Edge" (расширенный режим экрана)
         enableEdgeToEdge()
 
-        // Устанавливаем макет для активити из файла activity_main.xml
-        setContentView(R.layout.activity_main)
-
         // Настраиваем обработчик оконных вставок (отступов вокруг системных панелей)
         setupWindowInsets()
-
-        // Настраиваем навигацию в приложении с использованием Navigation Component
-        setupNavigation()
     }
 
     // Функция для настройки обработчика оконных вставок
@@ -40,11 +39,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Функция для настройки навигации с использованием Navigation Component
-    private fun setupNavigation() {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount == 1) {
+            // Если текущий фрагмент - первый фрагмент в стеке, закрываем активити
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.nav_host_fragment).navigateUp() || super.onSupportNavigateUp()
     }
 }
 
