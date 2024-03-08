@@ -20,6 +20,7 @@ interface MovieRepository {
 data class MoviePage(
     val movies: List<MovieDomain>,
     val currentPage: Int,
+    val totalPage: Int,
 )
 
 /**
@@ -35,10 +36,10 @@ class MovieRepositoryImpl @Inject constructor(private val apiService: MoviesByGe
     override suspend fun getMovie(genres: String, order: String, page: Int): MoviePage {
         // Retrieve movie data from the API service
         val genresResponse =
-           apiService.getMoviesByGenres(genres = genres, order = order, page = page)
+            apiService.getMoviesByGenres(genres = genres, order = order, page = page)
         // Map movie API response objects to MovieDomain objects
         val movies = genresResponse.items.map { it.toMovieDomain() }
         // Return MoviePage with movies list and current page number
-        return MoviePage(movies, page)
+        return MoviePage(movies, page, genresResponse.totalPages)
     }
 }

@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shimmer_layaout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
@@ -17,69 +18,106 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/film_poster"
+            android:id="@+id/poster_film"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             app:cardCornerRadius="45dp"
-            app:srcCompat="@drawable/placeholder_poster"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            />
-
-        <!-- Кнопка закрытия -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/close_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:src="@drawable/ic_close"
-            app:backgroundTint="?attr/colorSurface"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <!-- Ваши элементы UI здесь (ImageView, TextViews, Buttons) -->
+            app:srcCompat="@drawable/placeholder_poster" />
 
         <!-- Строка с названием фильма -->
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title_text"
+            android:id="@+id/title_film"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
             android:textAlignment="viewStart"
             android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@id/rating_year_text"
+            app:layout_constraintBottom_toTopOf="@id/year_film"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="FURY / ЯРОСТЬ" />
 
         <!-- Строка с рейтингом и годом создания -->
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/rating_year_text"
-            android:layout_width="0dp"
+            android:id="@+id/imdb_rating_film"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="12dp"
+            android:drawableStart="@drawable/imdb_svg"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/title_text"
-            app:layout_constraintStart_toStartOf="@id/title_text"
-            app:layout_constraintTop_toBottomOf="@id/title_text"
-            tools:text="IMDB 8.5 • 2018" />
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/genres_film"
+            app:layout_constraintStart_toStartOf="@id/title_film"
+            tools:text="8.5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/kinopoist_rating_film"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="12dp"
+            android:drawableStart="@drawable/kinopoisk_svg"
+            android:drawableTint="@color/kinopoisk"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/genres_film"
+            app:layout_constraintStart_toEndOf="@id/imdb_rating_film"
+            tools:text="9.0" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/year_film"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/genres_film"
+            app:layout_constraintStart_toEndOf="@id/kinopoist_rating_film"
+            tools:text="2018" />
 
         <!-- Строка с жанрами -->
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/genres_text"
+            android:id="@+id/genres_film"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:shadowColor="#000"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/rating_year_text"
-            app:layout_constraintStart_toStartOf="@id/rating_year_text"
-            app:layout_constraintTop_toBottomOf="@id/rating_year_text"
+            app:layout_constraintBottom_toTopOf="@id/buttons_layout"
+            app:layout_constraintEnd_toEndOf="@id/title_film"
+            app:layout_constraintStart_toStartOf="@+id/title_film"
             tools:text="Драма • Боевик" />
 
         <!-- Кнопки "Не сегодня" и "То, что надо" -->
@@ -88,12 +126,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="50dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/genres_text"
-            app:layout_constraintStart_toStartOf="@id/genres_text"
-            app:layout_constraintTop_toBottomOf="@id/genres_text">
+            app:layout_constraintEnd_toEndOf="@id/title_film"
+            app:layout_constraintStart_toStartOf="@id/title_film">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/not_today_button"
@@ -101,6 +138,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:layout_weight="1"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
                 android:text="Не сегодня"
                 android:textColor="@color/white"
                 app:backgroundTint="@color/red" />
@@ -111,6 +152,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_weight="1"
+                android:shadowColor="#000"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
                 android:text="То, что надо"
                 android:textColor="@color/white"
                 app:backgroundTint="@color/blue" />

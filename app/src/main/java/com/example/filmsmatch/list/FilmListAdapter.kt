@@ -10,6 +10,9 @@ import com.example.filmsmatch.R
 class FilmListAdapter : ListAdapter<MovieDomain, MovieViewHolder>(FilmDiffCallback()) {
     // Обработчик клика на элемент списка
     var onItemClick: (Int) -> Unit = {}
+    var onNotTodayClick: ((MovieDomain) -> Unit)? = null
+    var onJustRightClick: ((MovieDomain) -> Unit)? = null
+
     // Обработчик свайпа элемента списка
     var onItemSwipe: (position: Int, direction: Int) -> Unit = { _, _ -> }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -22,6 +25,12 @@ class FilmListAdapter : ListAdapter<MovieDomain, MovieViewHolder>(FilmDiffCallba
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         // Привязываем данные к ViewHolder
         holder.bind(getItem(position))
+        holder.notTodayButton.setOnClickListener {
+            onNotTodayClick?.invoke(getItem(position))
+        }
+        holder.justRightButton.setOnClickListener {
+            onJustRightClick?.invoke(getItem(position))
+        }
     }
 
     // Метод для удаления элемента из списка

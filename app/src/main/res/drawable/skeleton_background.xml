@@ -1,8 +1,7 @@
 <!-- skeleton_background.xml -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:innerRadius="8dp"
     android:shape="rectangle">
-    <gradient
-        android:angle="90"
-        android:endColor="#F0F0F0"
-        android:startColor="#231F1F" />
+    <corners android:radius="8dp" />
+    <solid android:color="@color/material_dynamic_primary0" />
 </shape>

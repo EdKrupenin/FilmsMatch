@@ -32,7 +32,7 @@ class FragmentGenreSelection : Fragment(R.layout.fragment_genre_selection) {
             // Выполняем переход к целевому фрагменту с помощью экшена
             navController.navigate(R.id.action_fragmentGenreSelection_to_fragmentRecycler)
         }
-        binding.backButton.setOnClickListener {
+        binding.toolbar.setOnClickListener {
             // Выполняем переход к целевому фрагменту с помощью экшена
             navController.navigate(R.id.action_any_to_start_screen)
         }

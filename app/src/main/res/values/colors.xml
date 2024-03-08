@@ -4,5 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="blue">#3399FF</color>
+    <color name="kinopoisk">#ff5c24</color>
     <color name="shimmer_color">#2EFF34</color>
 </resources>

@@ -4,16 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_baseline_arrow_back_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.ImageButton" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="Выбор жанров"
+        app:titleCentered="true"
+        app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Строка "Порядок выдачи" -->
     <com.google.android.material.textview.MaterialTextView
@@ -25,7 +23,7 @@
         android:text="Порядок выдачи"
         android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back_button" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <!-- Кнопка с выпадающим меню -->
     <com.google.android.material.button.MaterialButton
@@ -46,7 +44,7 @@
         app:layout_constraintTop_toTopOf="@id/sorting_order_label" />
 
     <include
-        layout="@layout/fragment_genre_error"
+        layout="@layout/fragment_error"
         android:id="@+id/error_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
