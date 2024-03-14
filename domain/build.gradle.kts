@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.hilt.android)
     // Плагин kapt для обработки аннотаций Hilt во время компиляции
     kapt(libs.hilt.android.compiler)
+    implementation(libs.retrofit)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

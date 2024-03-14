@@ -1,4 +1,4 @@
-package com.example.filmsmatch.list
+package com.example.filmsmatch.list.recycler
 
 import android.view.View
 import android.widget.ImageView
@@ -11,7 +11,6 @@ import com.squareup.picasso.Picasso
 
 class MovieViewHolder(
     view: View,
-    private val onItemActionSwiped: (Int) -> Unit,
 ) : RecyclerView.ViewHolder(view) {
     private val posterImageView: ImageView = itemView.findViewById(R.id.poster_film)
     private val titleTextView: TextView = itemView.findViewById(R.id.title_film)
@@ -22,6 +21,7 @@ class MovieViewHolder(
     private val genresTextView: TextView = itemView.findViewById(R.id.genres_film)
     val notTodayButton: MaterialButton = itemView.findViewById(R.id.not_today_button)
     val justRightButton: MaterialButton = itemView.findViewById(R.id.just_right_button)
+    val infoButton: MaterialButton = itemView.findViewById(R.id.infoButton)
     fun bind(model: MovieDomain) {
 
         // Устанавливаем постер
@@ -51,6 +51,5 @@ class MovieViewHolder(
 
         // Устанавливаем жанры
         genresTextView.text = model.genres.joinToString(separator = " • ", transform = { it })
-
     }
 }

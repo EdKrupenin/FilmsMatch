@@ -28,6 +28,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/placeholder_poster" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/infoButton"
+            style="@style/Widget.Material3.Button.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:icon="@drawable/baseline_info_24"
+            app:iconGravity="end"
+            app:iconSize="44dp"
+            app:iconTint="@color/material_dynamic_primary100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <!-- Строка с названием фильма -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/title_film"
@@ -53,8 +66,8 @@
             android:id="@+id/imdb_rating_film"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
             android:drawableStart="@drawable/imdb_svg"
             android:shadowColor="#000"
             android:shadowDx="0"
@@ -71,8 +84,8 @@
             android:id="@+id/kinopoist_rating_film"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
             android:drawableStart="@drawable/kinopoisk_svg"
             android:drawableTint="@color/kinopoisk"
             android:shadowColor="#000"
@@ -90,8 +103,8 @@
             android:id="@+id/year_film"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
             android:shadowColor="#000"
             android:shadowDx="0"
             android:shadowDy="0"

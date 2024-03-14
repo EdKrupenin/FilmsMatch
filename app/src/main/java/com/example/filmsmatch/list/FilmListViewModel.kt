@@ -1,10 +1,9 @@
 package com.example.filmsmatch.list
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.example.data.GenreCacheManager
-import com.example.data.MovieCacheManager
+import com.example.data.MovieData
 import com.example.data.MovieDomain
+import com.example.domain.FilmsMatchError
 import com.example.domain.MovieRepository
 import com.example.filmsmatch.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,60 +12,31 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FilmListViewModel @Inject constructor(
-    genreCacheManager: GenreCacheManager,
-    private val movieCacheManager: MovieCacheManager,
     private val repository: MovieRepository,
 ) : BaseViewModel<FilmListState>(FilmListState.Loading) {
-    // Получаем id жанра из кэша
-    private val genresString: String =
-        genreCacheManager.genreCache.value.selectedGenres.joinToString(",") { it.id }
-    private val orderString: String =
-        genreCacheManager.genreCache.value.selectedOrder?.value.toString()
 
+    private var currentPage: Int = 1
 
     init {
         loadMovie()
     }
 
-    private fun loadMovie() {
+    private fun loadMovie(page: Int = currentPage) {
         viewModelScope.launch {
-            setState(
-                FilmListState.Loading
-            ) // Перед загрузкой показываем состояние загрузки
-            try {
-                if (genresString.isNotEmpty()) {
-                    // Получаем текущий номер страницы из кэша фильмов, если он есть, иначе используем 1
-                    var currentPage = movieCacheManager.movieCache.value.currentPage ?: 1
-                    if (currentPage <= 0) currentPage = 1
-                    // Получаем список фильмов с текущей страницы и обновляем кэш
-                    val moviePage = repository.getMovie(genresString, orderString, currentPage)
-                    movieCacheManager.updateMovieData(moviePage.movies, moviePage.currentPage)
-                    setState(
-                        FilmListState.Success(
-                            moviePage.movies,
-                            moviePage.currentPage,
-                            moviePage.totalPage,
-                            orderString
-                        )
-                    )
-                } else {
-                    setState(FilmListState.Error("No selected genres"))
-                }
-
-            } catch (e: Exception) {
-                e.message?.let { Log.d("FragmentRecyclerViewModel", it) }
-                setState(
-                    FilmListState.Error("Failed to load movie: ${e.message}")
-                )
-            }
+            setState(FilmListState.Loading)
+            val result = repository.getMovie(page)
+            handleMovieResult(result, isNextPage = page > currentPage)
         }
+    }
+
+    fun loadNextPage() {
+        loadMovie(currentPage + 1)
     }
 
     fun removeFilm(film: MovieDomain) {
         viewModelScope.launch {
             if (stateFlow.value is FilmListState.Success) {
-                val currentList =
-                    (stateFlow.value as FilmListState.Success).films.toMutableList()
+                val currentList = (stateFlow.value as FilmListState.Success).films.toMutableList()
                 currentList.remove(film)
                 setState(
                     (stateFlow.value as FilmListState.Success).copy(films = currentList)
@@ -78,8 +48,7 @@ class FilmListViewModel @Inject constructor(
     fun saveFilmId(film: MovieDomain) {
         viewModelScope.launch {
             if (stateFlow.value is FilmListState.Success) {
-                val currentList =
-                    (stateFlow.value as FilmListState.Success).films.toMutableList()
+                val currentList = (stateFlow.value as FilmListState.Success).films.toMutableList()
                 currentList.remove(film)
                 // TODO SAVE ID in cashe - Tinder BO
                 setState(
@@ -89,44 +58,27 @@ class FilmListViewModel @Inject constructor(
         }
     }
 
-    fun loadNextPage() {
-        viewModelScope.launch {
-            // Проверяем, не достигли ли мы конца списка
-            val currentState = stateFlow.value
-            if (currentState is FilmListState.Success) {
-                // Здесь определите логику для проверки, есть ли еще страницы для загрузки
-                val nextPage = currentState.currentPage + 1
-                if (nextPage > currentState.totalPage) {
-                    setState(
-                        FilmListState.Edge("No more films in this genres")
-                    )
-                    return@launch
+    private fun handleMovieResult(result: Result<MovieData>, isNextPage: Boolean) {
+        result.onSuccess { movieList ->
+            currentPage = movieList.currentPage
+            val updatedList = if (isNextPage) {
+                (stateFlow.value as? FilmListState.Success)?.films.orEmpty().toMutableList().apply {
+                    addAll(movieList.movies)
                 }
-                setState(
-                    FilmListState.Loading
-                ) // Перед загрузкой показываем состояние загрузки
-                try {
-                    val moviePage = repository.getMovie(genresString, orderString, nextPage)
-                    movieCacheManager.updateMovieData(moviePage.movies, moviePage.currentPage)
-                    val updatedList = currentState.films.toMutableList().apply {
-                        addAll(moviePage.movies)
-                    }
-                    setState(
-                        FilmListState.Success(
-                            updatedList,
-                            moviePage.currentPage,
-                            moviePage.totalPage,
-                            orderString
-                        )
-                    )
-                } catch (e: Exception) {
-                    e.message?.let { Log.d("FragmentRecyclerViewModel", it) }
-                    setState(
-                        FilmListState.Error("Failed to load movie: ${e.message}")
-                    )
-                }
+            } else {
+                movieList.movies
             }
+            setState(FilmListState.Success(updatedList))
+        }.onFailure { error ->
+            val errorMessage = when (error) {
+                is FilmsMatchError.EmptyResponse -> "No more films in this genre"
+                is FilmsMatchError.BadRequest -> "Select too match genre"
+                is FilmsMatchError.NetworkError -> "Network error"
+                else -> "Unknown error"
+            }
+            setState(FilmListState.Error(errorMessage, error is FilmsMatchError.NetworkError))
         }
     }
+
 
 }

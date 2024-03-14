@@ -1,5 +1,6 @@
 package com.example.data.network.genre
 
+import retrofit2.Response
 import retrofit2.http.GET
 
 /**
@@ -11,5 +12,5 @@ interface GenresApiService {
      * @return [GenresResponse] containing the list of genres.
      */
     @GET("/api/v2.2/films/filters")
-    suspend fun getGenres(): GenresResponse
+    suspend fun getGenres(): Response<GenresResponse>
 }

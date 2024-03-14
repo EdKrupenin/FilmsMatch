@@ -15,5 +15,5 @@ sealed class GenreSelectionState : BaseState() {
         val sortingOptions: List<SortingOption> // Список всех вариантов сортировки
     ) : GenreSelectionState()
 
-    data class Error(val message: String) : GenreSelectionState()
+    data class Error(val message: String, val retryAction: Boolean) : GenreSelectionState()
 }

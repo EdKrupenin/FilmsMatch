@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="152dp"
-        android:text="Кино-Тиндер"
+        android:text="Кино-Выбор"
         android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
         android:textSize="44sp"
         app:layout_constraintEnd_toEndOf="parent"

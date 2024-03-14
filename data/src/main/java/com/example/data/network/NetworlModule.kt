@@ -1,6 +1,7 @@
 package com.example.data.network
 
 import com.example.data.network.genre.GenresApiService
+import com.example.data.network.movie.MovieDetailsApiService
 import com.example.data.network.movie.MoviesByGenresApiService
 import dagger.Module
 import dagger.Provides
@@ -68,5 +69,10 @@ object NetworlModule {
     @Provides
     fun provideMovieApiService(retrofit: Retrofit): MoviesByGenresApiService {
         return retrofit.create(MoviesByGenresApiService::class.java)
+    }
+    @Singleton
+    @Provides
+    fun provideMovieDetailsApiService(retrofit: Retrofit): MovieDetailsApiService {
+        return retrofit.create(MovieDetailsApiService::class.java)
     }
 }

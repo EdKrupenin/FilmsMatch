@@ -1,15 +1,21 @@
 package com.example.data
 
-import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@ActivityRetainedScoped
+@Singleton
 class GenreCacheManager @Inject constructor() {
     // Кэш жанров, представленный в виде MutableStateFlow
-    private val _genreCache = MutableStateFlow(GenreData(emptyList(), emptyList(), null))
+    private val _genreCache = MutableStateFlow(
+        GenreData(
+            emptyList(),
+            emptyList(),
+            null
+        )
+    )
 
     // Публичный доступ к кэшу жанров через StateFlow
     val genreCache: StateFlow<GenreData> get() = _genreCache.asStateFlow()
@@ -25,10 +31,9 @@ class GenreCacheManager @Inject constructor() {
     /**
      * Функция для обновления данных о жанрах из сети
      * @param updateList: List<GenreDomain> - список жанров из сети
-     * @param order - вариант сортировки по умолчанию
      */
-    fun updateGenreData(updateList: List<GenreDomain>, order: SortingOption) {
-        _genreCache.value = _genreCache.value.copy(genresFromNetwork = updateList, selectedOrder = order)
+    fun updateGenreData(updateList: List<GenreDomain>) {
+        _genreCache.value = _genreCache.value.copy(genresFromNetwork = updateList)
     }
 
     /**

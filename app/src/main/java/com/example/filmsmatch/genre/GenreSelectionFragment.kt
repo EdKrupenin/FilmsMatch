@@ -12,6 +12,7 @@ import com.example.filmsmatch.databinding.FragmentGenreSelectionBinding
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -25,7 +26,8 @@ class GenreSelectionFragment :
             findNavController().navigate(R.id.action_fragmentGenreSelection_to_fragmentRecycler)
         }
         binding.toolbar.setOnClickListener {
-            findNavController().navigate(R.id.action_any_to_start_screen)
+            findNavController().navigateUp()
+            //navigate(R.id.action_fragmentGenreSelection_to_fragmentStartScreen)
         }
     }
 
@@ -71,7 +73,7 @@ class GenreSelectionFragment :
     private fun updateOrderButton(genreState: GenreSelectionState.Loaded) {
         val adapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
+            R.layout.dropdown_list_item,
             genreState.sortingOptions.map { it.description })
         binding.autoCompleteTextView.setAdapter(adapter)
         binding.autoCompleteTextView.setText(genreState.sortingOrder.description, false)

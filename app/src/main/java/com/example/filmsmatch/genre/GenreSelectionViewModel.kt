@@ -1,9 +1,9 @@
 package com.example.filmsmatch.genre
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.data.GenreCacheManager
 import com.example.data.GenreDomain
+import com.example.domain.FilmsMatchError
 import com.example.domain.GenreRepository
 import com.example.domain.SortingOptionsProvider
 import com.example.filmsmatch.base.BaseViewModel
@@ -19,6 +19,9 @@ class GenreSelectionViewModel @Inject constructor(
 ) : BaseViewModel<GenreSelectionState>(GenreSelectionState.Loading) {
 
     init {
+        val defaultOrder = genreCacheManager.genreCache.value.selectedOrder
+            ?: sortingOptionsProvider.sortingOptions.first()
+        genreCacheManager.updateSelectedOrder(defaultOrder)
         loadGenres()
     }
 
@@ -26,45 +29,34 @@ class GenreSelectionViewModel @Inject constructor(
     fun loadGenres() {
         viewModelScope.launch {
             setState(GenreSelectionState.Loading) // Перед загрузкой показываем состояние загрузки
-            try {
-                val genresFromNetwork =
-                    genreCacheManager.genreCache.value.genresFromNetwork // Получаем данные из кэша
+            val result = repository.getGenres()
+            result.onSuccess { genresFromNetwork ->
                 val selectedGenres =
-                    genreCacheManager.genreCache.value.selectedGenres // Получаем данные из кэша
-                if (genresFromNetwork.isNotEmpty()) {
-                    // Если данные есть в кэше, используем их
-                    setState(
-                        GenreSelectionState.Loaded(
-                            genresFromNetwork,
-                            selectedGenres,
-                            sortingOptionsProvider.sortingOptions.first(),
-                            selectedGenres.isNotEmpty(),
-                            true,
-                            sortingOptionsProvider.sortingOptions
-                        )
-                    )
-                } else {
-                    // Если данных в кэше нет, загружаем их из репозитория
-                    val genres = repository.getGenres()
-                    val order = genreCacheManager.genreCache.value.selectedOrder
-                        ?: sortingOptionsProvider.sortingOptions.first()
-                    // Обновляем данные в genreCacheManager
-                    genreCacheManager.updateGenreData(genres, order)
-                    setState(
-                        GenreSelectionState.Loaded(
-                            genreCacheManager.genreCache.value.genresFromNetwork,
-                            selectedGenres,
-                            sortingOptionsProvider.sortingOptions.first(),
-                            selectedGenres.isNotEmpty(),
-                            true,
-                            sortingOptionsProvider.sortingOptions
-                        )
-                    )
-                }
-            } catch (e: Exception) {
-                e.message?.let { Log.d("GenreSelectionViewModel", it) }
+                    genreCacheManager.genreCache.value.selectedGenres
+                val order = genreCacheManager.genreCache.value.selectedOrder
+                    ?: sortingOptionsProvider.sortingOptions.first()
                 setState(
-                    GenreSelectionState.Error("Failed to load genres: ${e.message}")
+                    GenreSelectionState.Loaded(
+                        genresFromNetwork,
+                        selectedGenres,
+                        order,
+                        selectedGenres.isNotEmpty(),
+                        true,
+                        sortingOptionsProvider.sortingOptions
+                    )
+                )
+            }.onFailure { error ->
+                val errorMessage = when (error) {
+                    is FilmsMatchError.EmptyResponse -> "Failed to load genres, empty"
+                    is FilmsMatchError.BadRequest -> "Failed to load genres, bad request 400"
+                    is FilmsMatchError.NetworkError -> "Network error"
+                    else -> "Unknown error"
+                }
+                setState(
+                    GenreSelectionState.Error(
+                        errorMessage,
+                        error is FilmsMatchError.NetworkError
+                    )
                 )
             }
         }
@@ -88,19 +80,17 @@ class GenreSelectionViewModel @Inject constructor(
         viewModelScope.launch {
             val currentState = stateFlow.value
             if (currentState is GenreSelectionState.Loaded) {
-                val updatedSelectedGenres = if (isSelected) {
-                    currentState.selectedGenres + genre
-                } else {
-                    currentState.selectedGenres - genre
+                val updatedSelectedGenres = currentState.selectedGenres.toMutableList().apply {
+                    if (isSelected) add(genre) else remove(genre)
                 }
-                val updatedState = currentState.copy(selectedGenres = updatedSelectedGenres)
                 // Обновляем genreCacheManager
                 genreCacheManager.updateSelectedGenres(updatedSelectedGenres)
 
-                // Обновляем состояние доступности кнопки в зависимости от измененного списка выбранных жанров
-                val isButtonEnabled =
-                    updatedSelectedGenres.isNotEmpty() // Например, кнопка доступна, если есть выбранные жанры
-                val newState = updatedState.copy(accessNextButton = isButtonEnabled)
+                // Обновляем состояние с новым списком выбранных жанров
+                val newState = currentState.copy(
+                    selectedGenres = updatedSelectedGenres,
+                    accessNextButton = updatedSelectedGenres.isNotEmpty()
+                )
                 setState(newState)
             }
         }

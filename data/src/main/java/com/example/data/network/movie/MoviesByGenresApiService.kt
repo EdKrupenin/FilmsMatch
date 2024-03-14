@@ -1,6 +1,8 @@
 package com.example.data.network.movie
 
+import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -21,5 +23,17 @@ interface MoviesByGenresApiService {
         @Query("order") order: String,
         @Query("type") type: String = "FILM",
         @Query("page") page: Int,
-    ): MovieListApiResponse
+    ): Response<MovieListApiResponse>
+}
+
+interface MovieDetailsApiService {
+    /**
+     * Retrieves movies details by ID from the API.
+     * @param kinopoiskId The id of movie.
+     * @return [MovieDetailApiResponse] containing the list of movies by genres.
+     */
+    @GET("api/v2.2/films/{id}")
+    suspend fun getMovieDetails(
+        @Path("id") kinopoislId: Int
+    ): Response<MovieDetailApiResponse>
 }

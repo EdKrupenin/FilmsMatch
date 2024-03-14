@@ -14,7 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class FragmentStartScreen : Fragment(R.layout.fragment_start_screen) {
 
     private lateinit var binding: FragmentStartScreenBinding
-    private val navController by lazy { findNavController() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -22,7 +21,7 @@ class FragmentStartScreen : Fragment(R.layout.fragment_start_screen) {
         binding = FragmentStartScreenBinding.bind(view)
         binding.swipeModeButton.setOnClickListener {
             // Выполняем переход к целевому фрагменту с помощью экшена
-            navController.navigate(R.id.action_fragmentStartScreen_to_fragmentGenreSelection)
+            findNavController().navigate(R.id.action_fragmentStartScreen_to_fragmentGenreSelection)
         }
 
         binding.profileButton.setOnClickListener {
