@@ -8,7 +8,7 @@
         android:id="@+id/fragmentStartScreen"
         android:name="com.example.filmsmatch.start.FragmentStartScreen"
         android:label="FragmentStartScreen"
-        tools:layout="@layout/fragment_start_screen">
+        tools:layout="@layout/start_screen_fragment">
         <action
             android:id="@+id/action_fragmentStartScreen_to_fragmentGenreSelection"
             app:destination="@id/fragmentGenreSelection"
@@ -21,7 +21,7 @@
         android:id="@+id/fragmentGenreSelection"
         android:name="com.example.filmsmatch.genre.GenreSelectionFragment"
         android:label="FragmentGenreSelection"
-        tools:layout="@layout/fragment_genre_selection">
+        tools:layout="@layout/genres_selection_fragment">
         <action
             android:id="@+id/action_fragmentGenreSelection_to_fragmentRecycler"
             app:destination="@id/fragmentRecycler"
@@ -41,7 +41,7 @@
         android:id="@+id/fragmentRecycler"
         android:name="com.example.filmsmatch.list.FilmListFragment"
         android:label="FragmentRecycler"
-        tools:layout="@layout/fragment_recycler">
+        tools:layout="@layout/films_recycler_fragment">
         <action
             android:id="@+id/action_fragmentRecycler_to_fragmentGenreSelection"
             app:destination="@id/fragmentGenreSelection"

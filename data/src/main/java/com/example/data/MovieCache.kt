@@ -82,6 +82,21 @@ class MovieCacheManager @Inject constructor() {
         // Предполагается, что фильмы в кэше уже разбиты по страницам
         return movieCache.value.movies
     }
+
+    fun updateMovieLinks(kinopoiskId: Int, links: List<MovieLinkDomain>) {
+        val updatedMovies = movieCache.value.movies.map { movie ->
+            if (movie.kinopoiskId == kinopoiskId) {
+                movie.copy(links = links)
+            } else {
+                movie
+            }
+        }
+        updateMovies(updatedMovies)
+    }
+
+    fun getMovieLinks(kinopoiskId: Int): List<MovieLinkDomain> {
+        return movieCache.value.movies.first { it.kinopoiskId == kinopoiskId }.links
+    }
 }
 
 /**

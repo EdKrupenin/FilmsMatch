@@ -58,6 +58,9 @@ dependencies {
 
     implementation(libs.picasso)
 
+    implementation(libs.glide)
+    implementation(libs.androidsvg)
+
     implementation(libs.viewpager)
     // Зависимость для использования Kotlin Extensions в AndroidX
     implementation(libs.androidx.core.ktx)

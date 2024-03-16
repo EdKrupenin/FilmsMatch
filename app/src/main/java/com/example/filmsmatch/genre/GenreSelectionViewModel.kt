@@ -7,6 +7,7 @@ import com.example.domain.FilmsMatchError
 import com.example.domain.GenreRepository
 import com.example.domain.SortingOptionsProvider
 import com.example.filmsmatch.base.BaseViewModel
+import com.example.filmsmatch.base.ErrorType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,15 +47,15 @@ class GenreSelectionViewModel @Inject constructor(
                     )
                 )
             }.onFailure { error ->
-                val errorMessage = when (error) {
-                    is FilmsMatchError.EmptyResponse -> "Failed to load genres, empty"
-                    is FilmsMatchError.BadRequest -> "Failed to load genres, bad request 400"
-                    is FilmsMatchError.NetworkError -> "Network error"
-                    else -> "Unknown error"
+                val errorType = when (error) {
+                    is FilmsMatchError.EmptyResponse -> ErrorType.EMPTY_RESPONSE
+                    is FilmsMatchError.BadRequest -> ErrorType.BAD_REQUEST
+                    is FilmsMatchError.NetworkError -> ErrorType.NETWORK_ERROR
+                    else -> ErrorType.UNKNOWN
                 }
                 setState(
                     GenreSelectionState.Error(
-                        errorMessage,
+                        errorType,
                         error is FilmsMatchError.NetworkError
                     )
                 )

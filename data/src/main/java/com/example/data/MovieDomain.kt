@@ -31,5 +31,6 @@ data class MovieDomain(
     val type: String,
     val posterUrl: String?,
     val posterUrlPreview: String?,
-    val details: MovieDetailsDomain?
+    val details: MovieDetailsDomain?,
+    val links: List<MovieLinkDomain>
 )

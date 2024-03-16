@@ -4,7 +4,9 @@ import com.example.data.GenreCacheManager
 import com.example.data.MovieCacheManager
 import com.example.data.MovieData
 import com.example.data.MovieDetailsDomain
+import com.example.data.MovieLinkDomain
 import com.example.data.network.movie.MovieDetailsApiService
+import com.example.data.network.movie.MovieLinksApiService
 import com.example.data.network.movie.MoviesByGenresApiService
 import com.example.data.network.movie.toMovieDomain
 import javax.inject.Inject
@@ -16,6 +18,7 @@ interface MovieRepository {
     suspend fun getMovie(page: Int): Result<MovieData>
 
     suspend fun getMovieDetails(kinopoiskId: Int): Result<MovieDetailsDomain>
+    suspend fun getMovieLinks(kinopoiskId: Int): Result<List<MovieLinkDomain>>
 }
 
 /**
@@ -30,6 +33,7 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieCacheManager: MovieCacheManager,
     private val getMovieService: MoviesByGenresApiService,
     private val getMovieDetailsService: MovieDetailsApiService,
+    private val getMovieLinksService: MovieLinksApiService,
 ) : MovieRepository {
 
     /**
@@ -79,6 +83,16 @@ class MovieRepositoryImpl @Inject constructor(
             movieCacheManager.getMovieDetails(kinopoiskId)
             // Fetch movie details from the network and cache them if not already cached
                 ?: fetchAndCacheMovieDetails(kinopoiskId).getOrThrow()
+        }
+    }
+
+    override suspend fun getMovieLinks(kinopoiskId: Int): Result<List<MovieLinkDomain>> {
+        return runCatching {
+            // Return cached details if found
+            movieCacheManager.getMovieLinks(kinopoiskId).ifEmpty {
+                // Fetch movie details from the network and cache them if not already cached
+                fetchAndCacheMovieLinks(kinopoiskId).getOrThrow()
+            }
         }
     }
 
@@ -171,6 +185,25 @@ class MovieRepositoryImpl @Inject constructor(
                 movieCacheManager.updateMovieDetails(kinopoiskId, movieDetails)
                 // Return the movie details from cache
                 movieCacheManager.getMovieDetails(kinopoiskId)!!
+            } else {
+                when (response.code()) {
+                    400 -> throw FilmsMatchError.BadRequest
+                    else -> throw FilmsMatchError.NetworkError
+                }
+            }
+        }
+    }
+
+    private suspend fun fetchAndCacheMovieLinks(kinopoiskId: Int): Result<List<MovieLinkDomain>> {
+        return runCatching {
+            val response = getMovieLinksService.getMovieLinks(kinopoiskId)
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                if (body.items.isEmpty()) throw FilmsMatchError.EmptyResponse
+                val links = body.items.map { it.toMovieLinkDomain() }
+                movieCacheManager.updateMovieLinks(kinopoiskId, links)
+                // Return the movie details from cache
+                movieCacheManager.getMovieLinks(kinopoiskId)
             } else {
                 when (response.code()) {
                     400 -> throw FilmsMatchError.BadRequest

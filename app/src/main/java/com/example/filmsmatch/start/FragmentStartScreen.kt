@@ -11,7 +11,7 @@ import com.example.filmsmatch.databinding.FragmentStartScreenBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FragmentStartScreen : Fragment(R.layout.fragment_start_screen) {
+class FragmentStartScreen : Fragment(R.layout.start_screen_fragment) {
 
     private lateinit var binding: FragmentStartScreenBinding
 
@@ -48,7 +48,7 @@ class FragmentStartScreen : Fragment(R.layout.fragment_start_screen) {
     }
 
     private fun showToDo() {
-        Toast.makeText(requireActivity(), "Этот функционал еще не доступен", Toast.LENGTH_SHORT)
+        Toast.makeText(requireActivity(), R.string.warning_dev_tool_msg, Toast.LENGTH_SHORT)
             .show()
     }
 }

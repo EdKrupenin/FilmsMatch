@@ -1,5 +1,4 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp">
@@ -14,16 +13,18 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="8dp"
-            android:text="Подробнее о фильме"
+            android:text="@string/title_about_film"
             android:textAppearance="?attr/textAppearanceHeadline6" />
 
         <include
             android:id="@+id/error_layout"
-            layout="@layout/fragment_error"
-            android:layout_marginTop="72dp"
-            android:visibility="gone"
+            layout="@layout/error_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="72dp"
+            android:visibility="gone" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nested_scroll"
@@ -41,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="Слоган к фильму">
+                    android:hint="@string/slogan_about_film">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/sloganTextView"
@@ -50,8 +51,7 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:padding="16dp"
-                        android:textAppearance="?attr/textAppearanceBody1"
-                        tools:text="Тут мы расскажем слоган к фильму" />
+                        android:textAppearance="?attr/textAppearanceBody1" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="Описание фильма">
+                    android:hint="@string/description_about_film">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/descriptionTextView"
@@ -69,8 +69,7 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:padding="16dp"
-                        android:textAppearance="?attr/textAppearanceBody1"
-                        tools:text="Тут мы расскажем описание ну или краткое описание к фильму" />
+                        android:textAppearance="?attr/textAppearanceBody1" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="Возрастные ограничения">
+                    android:hint="@string/rating_about_film">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ratingAgeLimitsTextView"
@@ -88,8 +87,7 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:padding="16dp"
-                        android:textAppearance="?attr/textAppearanceBody1"
-                        tools:text="Тут мы расскажем о возрастных ограничениях" />
+                        android:textAppearance="?attr/textAppearanceBody1" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:hint="Страны производства">
+                    android:hint="@string/countries_about_film">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/countriesTextView"
@@ -107,10 +105,13 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:padding="16dp"
-                        android:textAppearance="?attr/textAppearanceBody1"
-                        tools:text="Тут мы расскажем о странах учавствовавших в производстве" />
+                        android:textAppearance="?attr/textAppearanceBody1" />
                 </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
+
         </androidx.core.widget.NestedScrollView>
+
     </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

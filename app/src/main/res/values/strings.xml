@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">FilmsMatch</string>
+    <string name="warning_dev_tool_msg">Этот функционал еще не доступен</string>
+    <string name="title_about_film">Подробнее о фильме</string>
+    <string name="slogan_about_film">Слоган к фильму</string>
+    <string name="description_about_film">Описание фильма</string>
+    <string name="rating_about_film">Возрастные ограничения</string>
+    <string name="countries_about_film">Страны производства</string>
+    <string name="title_links_film">Искал медь, а нашел золото</string>
+    <string name="not_today_button_film_item">Не сегодня</string>
+    <string name="just_right_button__film_item">То, что надо</string>
+    <string name="retry_button_error_layout">Повторить</string>
+    <string name="back_button_error_layout">Вернуться назад</string>
+    <string name="unknown_error_hint_error_layout">Что-то пошло не так</string>
+    <string name="empty_description_response_hint_error_layout">К сожалению у нас информации об этом фильме</string>
+    <string name="empty_genres_response_hint_error_layout">К сожалению у нас сейчас нет жанров для выбора</string>
+    <string name="empty_links_response_hint_error_layout">К сожалению для данного фильма мы не нашли ссылок для просмотра, вернитесь и выберите другой фильм</string>
+    <string name="empty_films_response_hint_error_layout">К сожалению в данном жанре больше не нашлось фильмов, вернитесь и выберите другой жанр</string>
+    <string name="too_match_genre_hint_error_layout">Выбрано много жанров, мы еще не умеем искать фильмы по этим параметрам</string>
+    <string name="network_error_hint_error_layout">Не удалось загрузить данные. Повторите позже</string>
+    <string name="title_genre_selection">Выбор жанров</string>>
+    <string name="sorting_order_hint_genre_selection">Порядок выдачи</string>
+    <string name="continue_button_genre_selection">Продолжить</string>
+    <string name="title_recycler">Выбери своего бойца</string>
+    <string name="title_start_screen">Кино-Выбор</string>
+    <string name="profile_start_screen">Профиль</string>
+    <string name="swipe_start_screen">Свайп</string>
+    <string name="roll_start_screen">Рулетка</string>
 </resources>

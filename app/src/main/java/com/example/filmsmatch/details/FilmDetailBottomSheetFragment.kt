@@ -9,7 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
+import com.example.filmsmatch.R
+import com.example.filmsmatch.base.ErrorType
 import com.example.filmsmatch.databinding.FilmDetailBottomSheetFragmentBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,9 +52,8 @@ class FilmDetailBottomSheetFragment : BottomSheetDialogFragment() {
 
     }
 
-    private fun showSuccess(success: FilmDetailState) {
-        val state = success as FilmDetailState.Success
-        val movieDetails = state.movieDetails
+    private fun showSuccess(success: FilmDetailState.Success) {
+        val movieDetails = success.movieDetails
 
         binding.sloganField.isVisible = movieDetails.slogan.isNotBlank()
         binding.sloganTextView.setText(movieDetails.slogan)
@@ -74,22 +74,37 @@ class FilmDetailBottomSheetFragment : BottomSheetDialogFragment() {
         binding.ratingAgeLimitsTextView.setText(ageLimits)
     }
 
-    private fun showError(state: FilmDetailState) {
-        val error = state as FilmDetailState.Error
+    private fun showError(state: FilmDetailState.Error) {
         binding.errorLayout.root.visibility = View.VISIBLE
         binding.nestedScroll.visibility = View.GONE
-        binding.errorLayout.errorTitle.text = error.errorMessage
-        binding.errorLayout.retry.setOnClickListener {
-            if (error.retryAction) retryButton()
-            else findNavController().navigateUp()
+        binding.errorLayout.errorTitle.setText(
+            when (state.errorType) {
+                ErrorType.EMPTY_RESPONSE -> R.string.empty_description_response_hint_error_layout
+                ErrorType.BAD_REQUEST -> R.string.network_error_hint_error_layout
+                ErrorType.NETWORK_ERROR -> R.string.network_error_hint_error_layout
+                else -> R.string.unknown_error_hint_error_layout
+            }
+        )
+        binding.errorLayout.retry.apply {
+            setText(
+                if (state.retryAction) R.string.retry_button_error_layout else R.string.back_button_error_layout
+            )
+            setOnClickListener {
+                if (state.retryAction) retryAction() else dismiss()
+            }
         }
     }
 
-    private fun retryButton() {
+    private fun retryAction() {
         viewModel.loadMovieDetails(viewModel.kinopoiskId) // Пытаемся загрузить жанры снова
         // Скрываем разметку ошибки и показываем ShimmerFrameLayout и ChipGroup
         binding.errorLayout.root.visibility = View.GONE
         binding.nestedScroll.visibility = View.VISIBLE
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
@@ -102,10 +117,5 @@ class FilmDetailBottomSheetFragment : BottomSheetDialogFragment() {
             fragment.arguments = args
             return fragment
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

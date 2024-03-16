@@ -134,11 +134,11 @@
                         android:alpha="0.5"
                         app:backgroundTint="@color/material_dynamic_primary0" />
                 </LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

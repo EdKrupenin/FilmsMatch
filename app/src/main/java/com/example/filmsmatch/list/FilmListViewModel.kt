@@ -6,6 +6,7 @@ import com.example.data.MovieDomain
 import com.example.domain.FilmsMatchError
 import com.example.domain.MovieRepository
 import com.example.filmsmatch.base.BaseViewModel
+import com.example.filmsmatch.base.ErrorType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class FilmListViewModel @Inject constructor(
         loadMovie()
     }
 
-    private fun loadMovie(page: Int = currentPage) {
+    fun loadMovie(page: Int = currentPage) {
         viewModelScope.launch {
             setState(FilmListState.Loading)
             val result = repository.getMovie(page)
@@ -50,7 +51,7 @@ class FilmListViewModel @Inject constructor(
             if (stateFlow.value is FilmListState.Success) {
                 val currentList = (stateFlow.value as FilmListState.Success).films.toMutableList()
                 currentList.remove(film)
-                // TODO SAVE ID in cashe - Tinder BO
+                // TODO SAVE ID in cache - Tinder BO
                 setState(
                     (stateFlow.value as FilmListState.Success).copy(films = currentList)
                 )
@@ -70,13 +71,13 @@ class FilmListViewModel @Inject constructor(
             }
             setState(FilmListState.Success(updatedList))
         }.onFailure { error ->
-            val errorMessage = when (error) {
-                is FilmsMatchError.EmptyResponse -> "No more films in this genre"
-                is FilmsMatchError.BadRequest -> "Select too match genre"
-                is FilmsMatchError.NetworkError -> "Network error"
-                else -> "Unknown error"
+            val errorType = when (error) {
+                is FilmsMatchError.EmptyResponse -> ErrorType.EMPTY_RESPONSE
+                is FilmsMatchError.BadRequest -> ErrorType.BAD_REQUEST
+                is FilmsMatchError.NetworkError -> ErrorType.NETWORK_ERROR
+                else -> ErrorType.UNKNOWN
             }
-            setState(FilmListState.Error(errorMessage, error is FilmsMatchError.NetworkError))
+            setState(FilmListState.Error(errorType, error is FilmsMatchError.NetworkError))
         }
     }
 

@@ -37,3 +37,15 @@ interface MovieDetailsApiService {
         @Path("id") kinopoislId: Int
     ): Response<MovieDetailApiResponse>
 }
+
+interface MovieLinksApiService {
+    /**
+     * Retrieves movies details by ID from the API.
+     * @param kinopoiskId The id of movie.
+     * @return [MovieLinksApiResponse] containing the list of movies by genres.
+     */
+    @GET("api/v2.2/films/{id}/external_sources?page=1")
+    suspend fun getMovieLinks(
+        @Path("id") kinopoislId: Int
+    ): Response<MovieLinksListApiResponse>
+}

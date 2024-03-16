@@ -10,10 +10,8 @@
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="Выбор жанров"
+        app:title="@string/title_genre_selection"
         app:titleCentered="true" />
-
-    <!-- Строка "Порядок выдачи" -->
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/sorting_order_text_input_layout"
@@ -23,7 +21,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
-        android:hint="Порядок выдачи"
+        android:hint="@string/sorting_order_hint_genre_selection"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
@@ -39,7 +37,7 @@
 
     <include
         android:id="@+id/error_layout"
-        layout="@layout/fragment_error"
+        layout="@layout/error_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/continue_button"
@@ -47,7 +45,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sorting_order_text_input_layout" />
 
-    <!-- Область с чипами -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll"
         android:layout_width="0dp"
@@ -63,7 +60,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- ShimmerFrameLayout с анимацией -->
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmer_container"
                 android:layout_width="match_parent"
@@ -79,7 +75,6 @@
                     android:orientation="vertical" />
             </com.facebook.shimmer.ShimmerFrameLayout>
 
-            <!-- ChipGroup для отображения чипов -->
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/genre_chip_group"
                 android:layout_width="match_parent"
@@ -89,14 +84,13 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Кнопка "Продолжить" -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/continue_button"
         style="Widget.Material3.Button.ContainedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Продолжить"
+        android:text="@string/continue_button_genre_selection"
         app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

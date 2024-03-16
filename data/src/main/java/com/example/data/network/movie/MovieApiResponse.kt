@@ -2,6 +2,7 @@ package com.example.data.network.movie
 
 import com.example.data.MovieDetailsDomain
 import com.example.data.MovieDomain
+import com.example.data.MovieLinkDomain
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -70,7 +71,8 @@ fun MovieApiResponse.toMovieDomain(): MovieDomain {
         type = this.type,
         posterUrl = this.posterUrl,
         posterUrlPreview = this.posterUrlPreview,
-        details = null
+        details = null,
+        emptyList()
     )
 }
 
@@ -110,3 +112,23 @@ data class Country(
 data class Genre(
     @SerializedName("genre") val genre: String,
 )
+
+data class MovieLinksListApiResponse(
+    @SerializedName("total") val total: Int,
+    @SerializedName("totalPages") val totalPages: Int,
+    @SerializedName("items") val items: List<MovieLinkApiResponse>,
+)
+
+data class MovieLinkApiResponse(
+    @SerializedName("url") val url: String,
+    @SerializedName("platform") val platform: String,
+    @SerializedName("logoUrl") val logoUrl: String,
+) {
+    fun toMovieLinkDomain(): MovieLinkDomain {
+        return MovieLinkDomain(
+            platformIconUrl = this.logoUrl,
+            platformName = this.platform,
+            platformLink = this.url,
+        )
+    }
+}

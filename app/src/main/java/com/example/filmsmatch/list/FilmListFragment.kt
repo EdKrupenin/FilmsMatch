@@ -1,13 +1,14 @@
 package com.example.filmsmatch.list
 
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.filmsmatch.R
 import com.example.filmsmatch.base.BaseFragment
+import com.example.filmsmatch.base.ErrorType
 import com.example.filmsmatch.databinding.FragmentRecyclerBinding
 import com.example.filmsmatch.list.recycler.FilmListAdapter
 import com.example.filmsmatch.list.recycler.SwipeCallback
@@ -39,11 +40,9 @@ class FilmListFragment : BaseFragment<FragmentRecyclerBinding, FilmListViewModel
             }
         }
         filmAdapter.apply {
-            // Удаление фильма
             onNotTodayClick = { film ->
                 viewModel.removeFilm(film)
             }
-            // Сохранение ID фильма
             onJustRightClick = { film ->
                 viewModel.saveFilmId(film)
             }
@@ -57,7 +56,6 @@ class FilmListFragment : BaseFragment<FragmentRecyclerBinding, FilmListViewModel
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val totalItemCount = layoutManager.itemCount
                     val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-                    // Если мы дошли до конца и не загружаем в данный момент
                     if (totalItemCount <= (lastVisibleItem + VISIBLE_THRESHOLD)) {
                         viewModel.loadNextPage()
                     }
@@ -79,7 +77,6 @@ class FilmListFragment : BaseFragment<FragmentRecyclerBinding, FilmListViewModel
     }
 
     override fun showLoading() {
-        Log.e("FragmentRecyclerViewModel", "Loading")
         binding.errorLayout.root.visibility = View.GONE
         binding.recyclerView.visibility = View.GONE
         startShimmerAnimation()
@@ -96,27 +93,39 @@ class FilmListFragment : BaseFragment<FragmentRecyclerBinding, FilmListViewModel
 
     override fun showError(state: FilmListState) {
         val error = state as FilmListState.Error
-        Log.d("FragmentRecyclerViewModel", error.errorMessage)
         binding.errorLayout.root.visibility = View.VISIBLE
         binding.shimmerContainer.root.visibility = View.GONE
         binding.recyclerView.visibility = View.GONE
-        binding.errorLayout.errorTitle.text = error.errorMessage
-        binding.errorLayout.retry.setOnClickListener {
-            if (error.retryAction) retryAction()
-            else findNavController().navigateUp()
+        binding.errorLayout.errorTitle.setText(
+            when (error.errorType) {
+                ErrorType.EMPTY_RESPONSE -> R.string.empty_films_response_hint_error_layout
+                ErrorType.BAD_REQUEST -> R.string.too_match_genre_hint_error_layout
+                ErrorType.NETWORK_ERROR -> R.string.network_error_hint_error_layout
+                else -> R.string.unknown_error_hint_error_layout
+            }
+        )
+        binding.errorLayout.retry.apply {
+            setText(
+                if (error.retryAction) R.string.retry_button_error_layout else R.string.back_button_error_layout
+            )
+            setOnClickListener {
+                if (error.retryAction) retryAction() else findNavController().navigateUp()
+            }
         }
     }
 
     private fun startShimmerAnimation() {
-        binding.shimmerContainer.shimmerLayout.startShimmer() // Запускаем анимацию shimmer
+        binding.shimmerContainer.shimmerLayout.startShimmer()
     }
 
     private fun stopShimmerAnimation() {
-        binding.shimmerContainer.shimmerLayout.stopShimmer() // Останавливаем анимацию shimmer
+        binding.shimmerContainer.shimmerLayout.stopShimmer()
     }
 
     private fun retryAction() {
-
+        viewModel.loadMovie()
+        binding.errorLayout.root.visibility = View.GONE
+        binding.shimmerContainer.root.visibility = View.VISIBLE
     }
 }
 

@@ -1,4 +1,4 @@
-package com.example.filmsmatch.details
+package com.example.filmsmatch.links
 
 import androidx.lifecycle.viewModelScope
 import com.example.domain.FilmsMatchError
@@ -10,28 +10,27 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FilmDetailViewModel @Inject constructor(
+class FilmLinksViewModel @Inject constructor(
     private val repository: MovieRepository,
-) : BaseViewModel<FilmDetailState>(FilmDetailState.Loading) {
+) : BaseViewModel<FilmLinksState>(FilmLinksState.Loading) {
     private var _kinopoiskId: Int = 0
     val kinopoiskId: Int
         get() = _kinopoiskId
 
-    fun loadMovieDetails(kinopoiskId: Int) {
+    fun loadLinks(kinopoiskId: Int) {
         _kinopoiskId = kinopoiskId
         viewModelScope.launch {
-            setState(FilmDetailState.Loading)
-            val result = repository.getMovieDetails(kinopoiskId)
-            result.onSuccess { movieDetails ->
-                setState(FilmDetailState.Success(movieDetails))
+            setState(FilmLinksState.Loading)
+            val result = repository.getMovieLinks(kinopoiskId)
+            result.onSuccess { movieLinks ->
+                setState(FilmLinksState.Success(movieLinks))
             }.onFailure { error ->
                 val errorType = when (error) {
                     is FilmsMatchError.EmptyResponse -> ErrorType.EMPTY_RESPONSE
-                    is FilmsMatchError.BadRequest -> ErrorType.BAD_REQUEST
                     is FilmsMatchError.NetworkError -> ErrorType.NETWORK_ERROR
                     else -> ErrorType.UNKNOWN
                 }
-                setState(FilmDetailState.Error(errorType, error is FilmsMatchError.NetworkError))
+                setState(FilmLinksState.Error(errorType, error is FilmsMatchError.NetworkError))
             }
         }
     }

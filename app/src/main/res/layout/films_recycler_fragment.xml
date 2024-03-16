@@ -11,12 +11,12 @@
         android:layout_height="?attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="Выбери своего бойца"
+        app:title="@string/title_recycler"
         app:titleCentered="true" />
 
     <include
         android:id="@+id/shimmer_container"
-        layout="@layout/films_item_sceleton"
+        layout="@layout/film_item_selection"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,15 +25,15 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:shimmer_auto_start="true"
         app:shimmer_base_alpha="0.5"
-        app:shimmer_highlight_alpha="0.9">
-
-    </include>
+        app:shimmer_highlight_alpha="0.9" />
 
     <include
         android:id="@+id/error_layout"
-        layout="@layout/fragment_error"
+        layout="@layout/error_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,6 +48,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:listitem="@layout/films_item_list" />
+        tools:listitem="@layout/film_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

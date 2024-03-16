@@ -2,6 +2,7 @@ package com.example.data.network
 
 import com.example.data.network.genre.GenresApiService
 import com.example.data.network.movie.MovieDetailsApiService
+import com.example.data.network.movie.MovieLinksApiService
 import com.example.data.network.movie.MoviesByGenresApiService
 import dagger.Module
 import dagger.Provides
@@ -11,8 +12,8 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import java.util.concurrent.TimeUnit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 /**
@@ -70,9 +71,17 @@ object NetworlModule {
     fun provideMovieApiService(retrofit: Retrofit): MoviesByGenresApiService {
         return retrofit.create(MoviesByGenresApiService::class.java)
     }
+
     @Singleton
     @Provides
     fun provideMovieDetailsApiService(retrofit: Retrofit): MovieDetailsApiService {
         return retrofit.create(MovieDetailsApiService::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideMovieLinksApiService(retrofit: Retrofit): MovieLinksApiService {
+        return retrofit.create(MovieLinksApiService::class.java)
+    }
+
 }

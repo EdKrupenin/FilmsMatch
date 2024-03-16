@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.data.MovieDomain
 import com.example.filmsmatch.R
 import com.example.filmsmatch.details.FilmDetailBottomSheetFragment
+import com.example.filmsmatch.links.FilmLinksDialogFragment
 
 class FilmListAdapter(private val fragmentManager: FragmentActivity) :
     ListAdapter<MovieDomain, MovieViewHolder>(FilmDiffCallback()) {
@@ -18,7 +19,7 @@ class FilmListAdapter(private val fragmentManager: FragmentActivity) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         // Создаем ViewHolder для элемента списка
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.films_item_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.film_item, parent, false)
         return MovieViewHolder(view)
     }
 
@@ -30,6 +31,7 @@ class FilmListAdapter(private val fragmentManager: FragmentActivity) :
         }
         holder.justRightButton.setOnClickListener {
             onJustRightClick?.invoke(getItem(position))
+            showLinksDialogForItem(position)
         }
         holder.infoButton.setOnClickListener {
             showBottomSheetForItem(position)
@@ -37,16 +39,31 @@ class FilmListAdapter(private val fragmentManager: FragmentActivity) :
     }
 
     // Метод для удаления элемента из списка
-    fun removeItem(position: Int, direction: Boolean) {
-        if (direction) onJustRightClick?.invoke(getItem(position))
-        else onNotTodayClick?.invoke(getItem(position))
-        // Создаем копию текущего списка и удаляем из нее элемент
+    fun showLinksDialogOrRemoveItem(position: Int, direction: Boolean) {
+        if (direction) {
+            onJustRightClick?.invoke(getItem(position))
+            showLinksDialogForItem(position)
+
+        } else {
+            onNotTodayClick?.invoke(getItem(position))
+            removeItemAtPosition(position)
+        }
+    }
+
+    private fun removeItemAtPosition(position: Int) {
         val newList = currentList.toMutableList().apply {
             removeAt(position)
         }
-        // Обновляем список
         submitList(newList)
+    }
 
+    private fun showLinksDialogForItem(position: Int) {
+        val kinopoiskId = getItem(position).kinopoiskId
+        val filmLinksFragment = FilmLinksDialogFragment.newInstance(kinopoiskId)
+        filmLinksFragment.show(
+            fragmentManager.supportFragmentManager,
+            filmLinksFragment.tag
+        )
     }
 
     private fun showBottomSheetForItem(position: Int) {
