@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragmentStartScreen">
+    app:startDestination="@id/startScreenFragment">
     <fragment
-        android:id="@+id/fragmentStartScreen"
-        android:name="com.example.filmsmatch.start.FragmentStartScreen"
+        android:id="@+id/startScreenFragment"
+        android:name="com.example.filmsmatch.start.StartScreenFragment"
         android:label="FragmentStartScreen"
         tools:layout="@layout/start_screen_fragment">
         <action
@@ -31,7 +31,7 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_fragmentGenreSelection_to_fragmentStartScreen"
-            app:destination="@id/fragmentStartScreen"
+            app:destination="@id/startScreenFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
@@ -55,5 +55,5 @@
     <!-- Действие для перехода на стартовый экран -->
     <action
         android:id="@+id/action_any_to_start_screen"
-        app:destination="@id/fragmentStartScreen" />
+        app:destination="@id/startScreenFragment" />
 </navigation>

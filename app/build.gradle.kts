@@ -58,9 +58,6 @@ dependencies {
 
     implementation(libs.picasso)
 
-    implementation(libs.glide)
-    implementation(libs.androidsvg)
-
     implementation(libs.viewpager)
     // Зависимость для использования Kotlin Extensions в AndroidX
     implementation(libs.androidx.core.ktx)
@@ -78,6 +75,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment)
     // Зависимость для unit-тестирования с использованием JUnit
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
     // Зависимость для инструментального тестирования с использованием AndroidX JUnit
     androidTestImplementation(libs.androidx.junit)
     // Зависимость для инструментального тестирования с использованием Espresso

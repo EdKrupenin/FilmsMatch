@@ -1,10 +1,10 @@
 package com.example.filmsmatch.list
 
 import androidx.lifecycle.viewModelScope
-import com.example.data.MovieData
-import com.example.data.MovieDomain
+import com.example.data.FilmsListDomain
+import com.example.data.FilmDomain
 import com.example.domain.FilmsMatchError
-import com.example.domain.MovieRepository
+import com.example.domain.FilmsRepository
 import com.example.filmsmatch.base.BaseViewModel
 import com.example.filmsmatch.base.ErrorType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FilmListViewModel @Inject constructor(
-    private val repository: MovieRepository,
+    private val repository: FilmsRepository,
 ) : BaseViewModel<FilmListState>(FilmListState.Loading) {
 
     private var currentPage: Int = 1
@@ -25,7 +25,7 @@ class FilmListViewModel @Inject constructor(
     fun loadMovie(page: Int = currentPage) {
         viewModelScope.launch {
             setState(FilmListState.Loading)
-            val result = repository.getMovie(page)
+            val result = repository.getFilms(page)
             handleMovieResult(result, isNextPage = page > currentPage)
         }
     }
@@ -34,7 +34,7 @@ class FilmListViewModel @Inject constructor(
         loadMovie(currentPage + 1)
     }
 
-    fun removeFilm(film: MovieDomain) {
+    fun removeFilm(film: FilmDomain) {
         viewModelScope.launch {
             if (stateFlow.value is FilmListState.Success) {
                 val currentList = (stateFlow.value as FilmListState.Success).films.toMutableList()
@@ -46,7 +46,7 @@ class FilmListViewModel @Inject constructor(
         }
     }
 
-    fun saveFilmId(film: MovieDomain) {
+    fun saveFilmId(film: FilmDomain) {
         viewModelScope.launch {
             if (stateFlow.value is FilmListState.Success) {
                 val currentList = (stateFlow.value as FilmListState.Success).films.toMutableList()
@@ -59,15 +59,15 @@ class FilmListViewModel @Inject constructor(
         }
     }
 
-    private fun handleMovieResult(result: Result<MovieData>, isNextPage: Boolean) {
+    private fun handleMovieResult(result: Result<FilmsListDomain>, isNextPage: Boolean) {
         result.onSuccess { movieList ->
             currentPage = movieList.currentPage
             val updatedList = if (isNextPage) {
                 (stateFlow.value as? FilmListState.Success)?.films.orEmpty().toMutableList().apply {
-                    addAll(movieList.movies)
+                    addAll(movieList.filmsList)
                 }
             } else {
-                movieList.movies
+                movieList.filmsList
             }
             setState(FilmListState.Success(updatedList))
         }.onFailure { error ->

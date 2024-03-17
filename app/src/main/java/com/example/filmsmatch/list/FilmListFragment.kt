@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.filmsmatch.R
 import com.example.filmsmatch.base.BaseFragment
 import com.example.filmsmatch.base.ErrorType
-import com.example.filmsmatch.databinding.FragmentRecyclerBinding
+import com.example.filmsmatch.databinding.FilmsRecyclerFragmentBinding
 import com.example.filmsmatch.list.recycler.FilmListAdapter
 import com.example.filmsmatch.list.recycler.SwipeCallback
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,8 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 private const val VISIBLE_THRESHOLD = 5
 
 @AndroidEntryPoint
-class FilmListFragment : BaseFragment<FragmentRecyclerBinding, FilmListViewModel, FilmListState>(
-    FragmentRecyclerBinding::inflate
+class FilmListFragment : BaseFragment<FilmsRecyclerFragmentBinding, FilmListViewModel, FilmListState>(
+    FilmsRecyclerFragmentBinding::inflate
 ) {
 
     override val viewModel: FilmListViewModel by viewModels()

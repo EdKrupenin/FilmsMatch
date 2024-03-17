@@ -9,7 +9,7 @@ import com.example.data.GenreDomain
 import com.example.filmsmatch.R
 import com.example.filmsmatch.base.BaseFragment
 import com.example.filmsmatch.base.ErrorType
-import com.example.filmsmatch.databinding.FragmentGenreSelectionBinding
+import com.example.filmsmatch.databinding.GenresSelectionFragmentBinding
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -17,8 +17,8 @@ import kotlin.random.Random
 
 @AndroidEntryPoint
 class GenreSelectionFragment :
-    BaseFragment<FragmentGenreSelectionBinding, GenreSelectionViewModel, GenreSelectionState>(
-        FragmentGenreSelectionBinding::inflate
+    BaseFragment<GenresSelectionFragmentBinding, GenreSelectionViewModel, GenreSelectionState>(
+        GenresSelectionFragmentBinding::inflate
     ) {
     override val viewModel: GenreSelectionViewModel by viewModels()
     override fun setupUI() {

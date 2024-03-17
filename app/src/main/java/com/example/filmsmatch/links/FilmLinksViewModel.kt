@@ -2,7 +2,7 @@ package com.example.filmsmatch.links
 
 import androidx.lifecycle.viewModelScope
 import com.example.domain.FilmsMatchError
-import com.example.domain.MovieRepository
+import com.example.domain.FilmsRepository
 import com.example.filmsmatch.base.BaseViewModel
 import com.example.filmsmatch.base.ErrorType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FilmLinksViewModel @Inject constructor(
-    private val repository: MovieRepository,
+    private val repository: FilmsRepository,
 ) : BaseViewModel<FilmLinksState>(FilmLinksState.Loading) {
     private var _kinopoiskId: Int = 0
     val kinopoiskId: Int
@@ -21,7 +21,7 @@ class FilmLinksViewModel @Inject constructor(
         _kinopoiskId = kinopoiskId
         viewModelScope.launch {
             setState(FilmLinksState.Loading)
-            val result = repository.getMovieLinks(kinopoiskId)
+            val result = repository.getFilmLinks(kinopoiskId)
             result.onSuccess { movieLinks ->
                 setState(FilmLinksState.Success(movieLinks))
             }.onFailure { error ->

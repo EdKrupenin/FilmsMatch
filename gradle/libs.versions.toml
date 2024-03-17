@@ -9,9 +9,6 @@ serializationPlugin = "1.8.0"
 hiltPlugin = "2.51"
 #Libraries
 coreKtx = "1.12.0"
-junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
 appcompat = "1.6.1"
 material = "1.11.0"
 activity = "1.8.2"
@@ -23,11 +20,14 @@ serialization = "1.6.3"
 retrofit = "2.9.0"
 converter-gson = "2.9.0"
 shimmer = "0.5.0"
-logging-interceptor = "4.9.0"
+logging-interceptor = "4.12.0"
 picasso = "2.71828"
 viewpager = "1.0.0"
-glide = "4.12.0"
-androidsvg = "1.4"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+mockk = "1.12.0"
+kotlinx-coroutines-test = "1.7.1"
 
 
 [libraries]
@@ -57,8 +57,9 @@ logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-intercep
 shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
 picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso" }
 viewpager = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager" }
-glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
-androidsvg = { group = "com.caverock", name = "androidsvg", version.ref = "androidsvg" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk"}
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test"}
+
 
 
 [plugins]

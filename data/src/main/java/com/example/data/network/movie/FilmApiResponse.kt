@@ -1,21 +1,31 @@
 package com.example.data.network.movie
 
-import com.example.data.MovieDetailsDomain
-import com.example.data.MovieDomain
-import com.example.data.MovieLinkDomain
+import com.example.data.FilmDetailsDomain
+import com.example.data.FilmDomain
+import com.example.data.FilmLinkDomain
+import com.example.data.FilmsListDomain
 import com.google.gson.annotations.SerializedName
 
 /**
- * Data class representing the response model for a list of movies from the API.
- * @property total The total number of movies in the response.
+ * Data class representing the response model for a list of filmsList from the API.
+ * @property total The total number of filmsList in the response.
  * @property totalPages The total number of pages.
  * @property items The list of movie items.
  */
-data class MovieListApiResponse(
+data class FilmsListApiResponse(
     @SerializedName("total") val total: Int,
     @SerializedName("totalPages") val totalPages: Int,
-    @SerializedName("items") val items: List<MovieApiResponse>,
-)
+    @SerializedName("items") val items: List<FilmApiResponse>,
+) {
+    fun toFilmsListData(): FilmsListDomain {
+        return FilmsListDomain(
+            filmsList = items.map { it.toFilmDomain() },
+            currentPage = totalPages,
+            currentGenres = "",
+            currentOrder = ""
+        )
+    }
+}
 
 /**
  * Data class representing the response model for a movie from the API.
@@ -33,7 +43,7 @@ data class MovieListApiResponse(
  * @property posterUrl The URL of the movie poster.
  * @property posterUrlPreview The URL of the preview image of the movie poster.
  */
-data class MovieApiResponse(
+data class FilmApiResponse(
     @SerializedName("kinopoiskId") val kinopoiskId: Int,
     @SerializedName("imdbId") val imdbId: String?,
     @SerializedName("nameRu") val nameRu: String,
@@ -50,14 +60,14 @@ data class MovieApiResponse(
 )
 
 /**
- * Extension function to convert [MovieApiResponse] objects to [MovieDomain] objects.
- * @return [MovieDomain] object created from the [MovieApiResponse].
+ * Extension function to convert [FilmApiResponse] objects to [FilmDomain] objects.
+ * @return [FilmDomain] object created from the [FilmApiResponse].
  */
-fun MovieApiResponse.toMovieDomain(): MovieDomain {
+fun FilmApiResponse.toFilmDomain(): FilmDomain {
     val countries = this.countries.map { it.country }
     val genres = this.genres.map { it.genre }
 
-    return MovieDomain(
+    return FilmDomain(
         kinopoiskId = this.kinopoiskId,
         imdbId = this.imdbId,
         nameRu = this.nameRu,
@@ -76,7 +86,7 @@ fun MovieApiResponse.toMovieDomain(): MovieDomain {
     )
 }
 
-data class MovieDetailApiResponse(
+data class FilmDetailApiResponse(
     @SerializedName("kinopoiskHDId") val kinopoiskHDId: String?,
     @SerializedName("slogan") val slogan: String?,
     @SerializedName("description") val description: String?,
@@ -85,15 +95,26 @@ data class MovieDetailApiResponse(
     @SerializedName("ratingAgeLimits") val ratingAgeLimits: String?,
     @SerializedName("countries") val countries: List<Country>,
 ) {
-    fun toMovieDetailsDomain(): MovieDetailsDomain {
-        return MovieDetailsDomain(kinopoiskHDId = this.kinopoiskHDId ?: "",
+    fun toFilmDetailsDomain(): FilmDetailsDomain {
+        return FilmDetailsDomain(
+            kinopoiskHDId = this.kinopoiskHDId ?: "",
             slogan = this.slogan ?: "",
             description = this.description ?: "",
             ratingMpaa = this.ratingMpaa ?: "",
             shortDescription = this.shortDescription ?: "",
             ratingAgeLimits = this.ratingAgeLimits ?: "",
-            countries = this.countries.map { it.country } // Преобразование списка стран из List<Country> в List<String>
+            countries = this.countries.map { it.country }
         )
+    }
+
+    fun isEmpty(): Boolean {
+        return kinopoiskHDId.isNullOrEmpty() &&
+                slogan.isNullOrEmpty() &&
+                description.isNullOrEmpty() &&
+                ratingMpaa.isNullOrEmpty() &&
+                shortDescription.isNullOrEmpty() &&
+                ratingAgeLimits.isNullOrEmpty() &&
+                countries.isEmpty()
     }
 }
 
@@ -113,19 +134,19 @@ data class Genre(
     @SerializedName("genre") val genre: String,
 )
 
-data class MovieLinksListApiResponse(
+data class FilmLinksListApiResponse(
     @SerializedName("total") val total: Int,
     @SerializedName("totalPages") val totalPages: Int,
-    @SerializedName("items") val items: List<MovieLinkApiResponse>,
+    @SerializedName("items") val items: List<FilmLinkApiResponse>,
 )
 
-data class MovieLinkApiResponse(
+data class FilmLinkApiResponse(
     @SerializedName("url") val url: String,
     @SerializedName("platform") val platform: String,
     @SerializedName("logoUrl") val logoUrl: String,
 ) {
-    fun toMovieLinkDomain(): MovieLinkDomain {
-        return MovieLinkDomain(
+    fun toFilmLinkDomain(): FilmLinkDomain {
+        return FilmLinkDomain(
             platformIconUrl = this.logoUrl,
             platformName = this.platform,
             platformLink = this.url,

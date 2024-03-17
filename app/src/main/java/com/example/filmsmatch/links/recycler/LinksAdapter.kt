@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.data.MovieLinkDomain
-import com.example.filmsmatch.databinding.FilmLinkItemBinding
+import com.example.data.FilmLinkDomain
+import com.example.filmsmatch.databinding.LinkItemBinding
 
-class LinksAdapter : ListAdapter<MovieLinkDomain, LinkViewHolder>(LinkDiffCallback()) {
+class LinksAdapter : ListAdapter<FilmLinkDomain, LinkViewHolder>(LinkDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinkViewHolder {
         val binding =
-            FilmLinkItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            LinkItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return LinkViewHolder(binding)
     }
 
@@ -21,12 +21,12 @@ class LinksAdapter : ListAdapter<MovieLinkDomain, LinkViewHolder>(LinkDiffCallba
     }
 }
 
-class LinkDiffCallback : DiffUtil.ItemCallback<MovieLinkDomain>() {
-    override fun areItemsTheSame(oldItem: MovieLinkDomain, newItem: MovieLinkDomain): Boolean {
+class LinkDiffCallback : DiffUtil.ItemCallback<FilmLinkDomain>() {
+    override fun areItemsTheSame(oldItem: FilmLinkDomain, newItem: FilmLinkDomain): Boolean {
         return oldItem.platformLink == newItem.platformLink
     }
 
-    override fun areContentsTheSame(oldItem: MovieLinkDomain, newItem: MovieLinkDomain): Boolean {
+    override fun areContentsTheSame(oldItem: FilmLinkDomain, newItem: FilmLinkDomain): Boolean {
         return oldItem == newItem
     }
 }

@@ -5,16 +5,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.data.MovieDomain
+import com.example.data.FilmDomain
 import com.example.filmsmatch.R
 import com.example.filmsmatch.details.FilmDetailBottomSheetFragment
 import com.example.filmsmatch.links.FilmLinksDialogFragment
 
 class FilmListAdapter(private val fragmentManager: FragmentActivity) :
-    ListAdapter<MovieDomain, MovieViewHolder>(FilmDiffCallback()) {
+    ListAdapter<FilmDomain, MovieViewHolder>(FilmDiffCallback()) {
     // Обработчик клика на элемент списка
-    var onNotTodayClick: ((MovieDomain) -> Unit)? = null
-    var onJustRightClick: ((MovieDomain) -> Unit)? = null
+    var onNotTodayClick: ((FilmDomain) -> Unit)? = null
+    var onJustRightClick: ((FilmDomain) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         // Создаем ViewHolder для элемента списка
@@ -77,13 +77,13 @@ class FilmListAdapter(private val fragmentManager: FragmentActivity) :
 }
 
 
-class FilmDiffCallback : DiffUtil.ItemCallback<MovieDomain>() {
-    override fun areItemsTheSame(oldItem: MovieDomain, newItem: MovieDomain): Boolean {
+class FilmDiffCallback : DiffUtil.ItemCallback<FilmDomain>() {
+    override fun areItemsTheSame(oldItem: FilmDomain, newItem: FilmDomain): Boolean {
         // Сравниваем идентификаторы фильмов
         return oldItem.kinopoiskId == newItem.kinopoiskId
     }
 
-    override fun areContentsTheSame(oldItem: MovieDomain, newItem: MovieDomain): Boolean {
+    override fun areContentsTheSame(oldItem: FilmDomain, newItem: FilmDomain): Boolean {
         // Проверяем, имеют ли фильмы одинаковое содержимое
         return oldItem == newItem
     }

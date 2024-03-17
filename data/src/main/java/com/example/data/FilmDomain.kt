@@ -17,7 +17,7 @@ package com.example.data
  * @property posterUrlPreview The URL of the movie's poster preview.
  * @property details The additional info for film.
  */
-data class MovieDomain(
+data class FilmDomain(
     val kinopoiskId: Int,
     val imdbId: String?,
     val nameRu: String?,
@@ -31,6 +31,6 @@ data class MovieDomain(
     val type: String,
     val posterUrl: String?,
     val posterUrlPreview: String?,
-    val details: MovieDetailsDomain?,
-    val links: List<MovieLinkDomain>
+    val details: FilmDetailsDomain?,
+    val links: List<FilmLinkDomain>
 )

@@ -1,9 +1,9 @@
 package com.example.data.network
 
 import com.example.data.network.genre.GenresApiService
-import com.example.data.network.movie.MovieDetailsApiService
-import com.example.data.network.movie.MovieLinksApiService
-import com.example.data.network.movie.MoviesByGenresApiService
+import com.example.data.network.movie.FilmDetailsApiService
+import com.example.data.network.movie.FilmLinksApiService
+import com.example.data.network.movie.FilmsListByGenresApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +21,7 @@ import javax.inject.Singleton
  */
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworlModule {
+object NetworkModule {
 
     private const val BASE_URL = "https://kinopoiskapiunofficial.tech/"
 
@@ -64,24 +64,24 @@ object NetworlModule {
     }
 
     /**
-     * Provides an implementation of [MoviesByGenresApiService].
+     * Provides an implementation of [FilmsListByGenresApiService].
      */
     @Singleton
     @Provides
-    fun provideMovieApiService(retrofit: Retrofit): MoviesByGenresApiService {
-        return retrofit.create(MoviesByGenresApiService::class.java)
+    fun provideMovieApiService(retrofit: Retrofit): FilmsListByGenresApiService {
+        return retrofit.create(FilmsListByGenresApiService::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideMovieDetailsApiService(retrofit: Retrofit): MovieDetailsApiService {
-        return retrofit.create(MovieDetailsApiService::class.java)
+    fun provideMovieDetailsApiService(retrofit: Retrofit): FilmDetailsApiService {
+        return retrofit.create(FilmDetailsApiService::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideMovieLinksApiService(retrofit: Retrofit): MovieLinksApiService {
-        return retrofit.create(MovieLinksApiService::class.java)
+    fun provideMovieLinksApiService(retrofit: Retrofit): FilmLinksApiService {
+        return retrofit.create(FilmLinksApiService::class.java)
     }
 
 }
