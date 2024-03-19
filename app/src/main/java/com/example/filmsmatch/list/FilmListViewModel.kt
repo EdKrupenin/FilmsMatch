@@ -1,10 +1,10 @@
 package com.example.filmsmatch.list
 
 import androidx.lifecycle.viewModelScope
-import com.example.data.FilmsListDomain
-import com.example.data.FilmDomain
+import com.example.domain.model.FilmsListDomain
+import com.example.domain.model.FilmDomain
 import com.example.domain.FilmsMatchError
-import com.example.domain.FilmsRepository
+import com.example.domain.repository.FilmsRepository
 import com.example.filmsmatch.base.BaseViewModel
 import com.example.filmsmatch.base.ErrorType
 import dagger.hilt.android.lifecycle.HiltViewModel

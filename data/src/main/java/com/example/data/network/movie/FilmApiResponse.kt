@@ -1,9 +1,9 @@
 package com.example.data.network.movie
 
-import com.example.data.FilmDetailsDomain
-import com.example.data.FilmDomain
-import com.example.data.FilmLinkDomain
-import com.example.data.FilmsListDomain
+import com.example.domain.model.FilmDetailsDomain
+import com.example.domain.model.FilmDomain
+import com.example.domain.model.FilmLinkDomain
+import com.example.domain.model.FilmsListDomain
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -81,7 +81,7 @@ fun FilmApiResponse.toFilmDomain(): FilmDomain {
         type = this.type,
         posterUrl = this.posterUrl,
         posterUrlPreview = this.posterUrlPreview,
-        details = null,
+        details = FilmDetailsDomain.DEFAULT,
         emptyList()
     )
 }

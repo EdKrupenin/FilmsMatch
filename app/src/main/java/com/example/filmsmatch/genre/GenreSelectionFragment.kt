@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.data.GenreDomain
+import com.example.domain.model.GenreDomain
 import com.example.filmsmatch.R
 import com.example.filmsmatch.base.BaseFragment
 import com.example.filmsmatch.base.ErrorType
@@ -89,7 +89,7 @@ class GenreSelectionFragment :
         val adapter = ArrayAdapter(
             requireContext(),
             R.layout.dropdown_list_item,
-            genreState.sortingOptions.map { it.description })
+            genreState.sortingOptionDomains.map { it.description })
         binding.autoCompleteTextView.setAdapter(adapter)
         binding.autoCompleteTextView.setText(genreState.sortingOrder.description, false)
         binding.autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->

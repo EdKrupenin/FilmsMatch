@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.data.FilmDomain
+import com.example.domain.model.FilmDomain
 import com.example.filmsmatch.R
 import com.example.filmsmatch.details.FilmDetailBottomSheetFragment
 import com.example.filmsmatch.links.FilmLinksDialogFragment

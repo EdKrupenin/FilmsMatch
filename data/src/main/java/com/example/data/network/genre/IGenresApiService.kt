@@ -4,11 +4,11 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 /**
- * Retrofit service interface for fetching genre data from the API.
+ * Retrofit service interface for fetching genre model from the API.
  */
-interface GenresApiService {
+interface IGenresApiService {
     /**
-     * Fetches genre data from the API.
+     * Fetches genre model from the API.
      * @return [GenresResponse] containing the list of genres.
      */
     @GET("/api/v2.2/films/filters")

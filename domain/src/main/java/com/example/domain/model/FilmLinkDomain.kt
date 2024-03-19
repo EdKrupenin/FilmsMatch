@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.domain.model
 
 data class FilmLinkDomain(
     val platformIconUrl: String,

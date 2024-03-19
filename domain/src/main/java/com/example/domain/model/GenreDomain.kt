@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.domain.model
 /**
  * Data class representing a genre domain entity.
  *

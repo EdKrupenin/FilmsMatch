@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.domain.model
 
 /**
  * Represents the domain model for a movie.
@@ -31,6 +31,6 @@ data class FilmDomain(
     val type: String,
     val posterUrl: String?,
     val posterUrlPreview: String?,
-    val details: FilmDetailsDomain?,
+    val details: FilmDetailsDomain,
     val links: List<FilmLinkDomain>
 )

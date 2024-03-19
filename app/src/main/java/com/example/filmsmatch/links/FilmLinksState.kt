@@ -1,6 +1,6 @@
 package com.example.filmsmatch.links
 
-import com.example.data.FilmLinkDomain
+import com.example.domain.model.FilmLinkDomain
 import com.example.filmsmatch.base.BaseState
 import com.example.filmsmatch.base.ErrorType
 

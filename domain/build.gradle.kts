@@ -35,8 +35,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
-
     // Зависимость для интеграции Hilt в приложение Android
     implementation(libs.hilt.android)
     // Плагин kapt для обработки аннотаций Hilt во время компиляции

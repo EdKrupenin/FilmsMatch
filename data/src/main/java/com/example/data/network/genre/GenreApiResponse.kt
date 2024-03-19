@@ -1,6 +1,6 @@
 package com.example.data.network.genre
 
-import com.example.data.GenreDomain
+import com.example.domain.model.GenreDomain
 import com.google.gson.annotations.SerializedName
 
 /**

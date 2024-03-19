@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.FilmDomain
+import com.example.domain.model.FilmDomain
 import com.example.filmsmatch.R
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso

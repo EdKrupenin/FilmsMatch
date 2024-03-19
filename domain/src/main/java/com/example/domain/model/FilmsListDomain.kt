@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.domain.model
 
 /**
  * Data class representing a set of filmsList and the current page number.
@@ -13,4 +13,11 @@ data class FilmsListDomain(
     val totalPages: Int = 1,
     val currentGenres: String,
     val currentOrder: String,
-)
+) {
+    companion object {
+        val DEFAULT = FilmsListDomain(
+            emptyList(),
+            1, 1, "", ""
+        )
+    }
+}

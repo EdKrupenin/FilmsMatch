@@ -2,7 +2,7 @@ package com.example.filmsmatch.details
 
 import androidx.lifecycle.viewModelScope
 import com.example.domain.FilmsMatchError
-import com.example.domain.FilmsRepository
+import com.example.domain.repository.FilmsRepository
 import com.example.filmsmatch.base.BaseViewModel
 import com.example.filmsmatch.base.ErrorType
 import dagger.hilt.android.lifecycle.HiltViewModel

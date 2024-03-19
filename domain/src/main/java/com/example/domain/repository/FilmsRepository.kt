@@ -1,11 +1,11 @@
-package com.example.domain
+package com.example.domain.repository
 
-import com.example.data.FilmsListDomain
-import com.example.data.FilmDetailsDomain
-import com.example.data.FilmLinkDomain
+import com.example.domain.model.FilmDetailsDomain
+import com.example.domain.model.FilmLinkDomain
+import com.example.domain.model.FilmsListDomain
 
 /**
- * Repository interface for fetching movie data.
+ * Repository interface for fetching movie model.
  */
 interface FilmsRepository {
     suspend fun getFilms(page: Int): Result<FilmsListDomain>

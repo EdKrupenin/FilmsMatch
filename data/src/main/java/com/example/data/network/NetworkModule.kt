@@ -1,9 +1,9 @@
 package com.example.data.network
 
-import com.example.data.network.genre.GenresApiService
-import com.example.data.network.movie.FilmDetailsApiService
-import com.example.data.network.movie.FilmLinksApiService
-import com.example.data.network.movie.FilmsListByGenresApiService
+import com.example.data.network.movie.IFilmDetailsApiService
+import com.example.data.network.movie.IFilmLinksApiService
+import com.example.data.network.movie.IFilmsListByGenresApiService
+import com.example.data.network.genre.IGenresApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,33 +55,33 @@ object NetworkModule {
     }
 
     /**
-     * Provides an implementation of [GenresApiService].
+     * Provides an implementation of [IGenresApiService].
      */
     @Singleton
     @Provides
-    fun provideGenresApiService(retrofit: Retrofit): GenresApiService {
-        return retrofit.create(GenresApiService::class.java)
+    fun provideGenresApiService(retrofit: Retrofit): IGenresApiService {
+        return retrofit.create(IGenresApiService::class.java)
     }
 
     /**
-     * Provides an implementation of [FilmsListByGenresApiService].
+     * Provides an implementation of [IFilmsListByGenresApiService].
      */
     @Singleton
     @Provides
-    fun provideMovieApiService(retrofit: Retrofit): FilmsListByGenresApiService {
-        return retrofit.create(FilmsListByGenresApiService::class.java)
+    fun provideMovieApiService(retrofit: Retrofit): IFilmsListByGenresApiService {
+        return retrofit.create(IFilmsListByGenresApiService::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideMovieDetailsApiService(retrofit: Retrofit): FilmDetailsApiService {
-        return retrofit.create(FilmDetailsApiService::class.java)
+    fun provideMovieDetailsApiService(retrofit: Retrofit): IFilmDetailsApiService {
+        return retrofit.create(IFilmDetailsApiService::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideMovieLinksApiService(retrofit: Retrofit): FilmLinksApiService {
-        return retrofit.create(FilmLinksApiService::class.java)
+    fun provideMovieLinksApiService(retrofit: Retrofit): IFilmLinksApiService {
+        return retrofit.create(IFilmLinksApiService::class.java)
     }
 
 }

@@ -5,7 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.FilmLinkDomain
+import com.example.domain.model.FilmLinkDomain
 import com.example.filmsmatch.databinding.LinkItemBinding
 
 class LinkViewHolder(private val binding: LinkItemBinding) :

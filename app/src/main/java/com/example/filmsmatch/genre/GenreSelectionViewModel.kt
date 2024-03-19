@@ -1,11 +1,10 @@
 package com.example.filmsmatch.genre
 
 import androidx.lifecycle.viewModelScope
-import com.example.data.GenreCacheManager
-import com.example.data.GenreDomain
 import com.example.domain.FilmsMatchError
-import com.example.domain.GenreRepository
-import com.example.domain.SortingOptionsProvider
+import com.example.domain.model.GenreDomain
+import com.example.domain.repository.GenreRepository
+import com.example.domain.repository.SortingOptionsRepository
 import com.example.filmsmatch.base.BaseViewModel
 import com.example.filmsmatch.base.ErrorType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,15 +13,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GenreSelectionViewModel @Inject constructor(
-    private val genreCacheManager: GenreCacheManager,
-    private val repository: GenreRepository,
-    private val sortingOptionsProvider: SortingOptionsProvider,
+    private val genresRepository: GenreRepository,
+    private val sortingOptionsRepository: SortingOptionsRepository,
 ) : BaseViewModel<GenreSelectionState>(GenreSelectionState.Loading) {
 
     init {
-        val defaultOrder = genreCacheManager.genreCache.value.selectedOrder
-            ?: sortingOptionsProvider.sortingOptions.first()
-        genreCacheManager.updateSelectedOrder(defaultOrder)
         loadGenres()
     }
 
@@ -30,12 +25,11 @@ class GenreSelectionViewModel @Inject constructor(
     fun loadGenres() {
         viewModelScope.launch {
             setState(GenreSelectionState.Loading) // Перед загрузкой показываем состояние загрузки
-            val result = repository.getGenres()
+            val result = genresRepository.getGenres()
             result.onSuccess { genresFromNetwork ->
                 val selectedGenres =
-                    genreCacheManager.genreCache.value.selectedGenres
-                val order = genreCacheManager.genreCache.value.selectedOrder
-                    ?: sortingOptionsProvider.sortingOptions.first()
+                    genresRepository.selectedGenres
+                val order = sortingOptionsRepository.selectedSortingOption
                 setState(
                     GenreSelectionState.Loaded(
                         genresFromNetwork,
@@ -43,7 +37,7 @@ class GenreSelectionViewModel @Inject constructor(
                         order,
                         selectedGenres.isNotEmpty(),
                         true,
-                        sortingOptionsProvider.sortingOptions
+                        sortingOptionsRepository.sortingOptionDomains
                     )
                 )
             }.onFailure { error ->
@@ -67,10 +61,9 @@ class GenreSelectionViewModel @Inject constructor(
         viewModelScope.launch {
             val currentState = stateFlow.value
             if (currentState is GenreSelectionState.Loaded) {
-                val updatedSelectedItem = currentState.sortingOptions[position]
+                val updatedSelectedItem = currentState.sortingOptionDomains[position]
                 val newState = currentState.copy(sortingOrder = updatedSelectedItem)
-                // Обновляем genreCacheManager
-                genreCacheManager.updateSelectedOrder(updatedSelectedItem)
+                sortingOptionsRepository.selectedSortingOption = updatedSelectedItem
                 setState(newState)
             }
         }
@@ -84,10 +77,8 @@ class GenreSelectionViewModel @Inject constructor(
                 val updatedSelectedGenres = currentState.selectedGenres.toMutableList().apply {
                     if (isSelected) add(genre) else remove(genre)
                 }
-                // Обновляем genreCacheManager
-                genreCacheManager.updateSelectedGenres(updatedSelectedGenres)
+                genresRepository.selectedGenres = updatedSelectedGenres
 
-                // Обновляем состояние с новым списком выбранных жанров
                 val newState = currentState.copy(
                     selectedGenres = updatedSelectedGenres,
                     accessNextButton = updatedSelectedGenres.isNotEmpty()

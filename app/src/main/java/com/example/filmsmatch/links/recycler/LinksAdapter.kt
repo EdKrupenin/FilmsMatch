@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.data.FilmLinkDomain
+import com.example.domain.model.FilmLinkDomain
 import com.example.filmsmatch.databinding.LinkItemBinding
 
 class LinksAdapter : ListAdapter<FilmLinkDomain, LinkViewHolder>(LinkDiffCallback()) {
