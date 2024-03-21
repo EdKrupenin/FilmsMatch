@@ -106,7 +106,11 @@ data class FilmDetailApiResponse(
             countries = this.countries.map { it.country }
         )
     }
-
+    companion object {
+        val EMPTY = FilmDetailApiResponse(
+            "", "", "", "", "", "", emptyList()
+        )
+    }
     fun isEmpty(): Boolean {
         return kinopoiskHDId.isNullOrEmpty() &&
                 slogan.isNullOrEmpty() &&

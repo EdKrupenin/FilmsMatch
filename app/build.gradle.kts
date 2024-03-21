@@ -75,7 +75,6 @@ dependencies {
     implementation(libs.androidx.navigation.fragment)
     // Зависимость для unit-тестирования с использованием JUnit
     testImplementation(libs.junit)
-    testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     // Зависимость для инструментального тестирования с использованием AndroidX JUnit
     androidTestImplementation(libs.androidx.junit)

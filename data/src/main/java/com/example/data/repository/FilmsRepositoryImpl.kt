@@ -31,8 +31,13 @@ class FilmsRepositoryImpl @Inject constructor(
         val orderString = generateOrderString()
 
         validatePageAndGenres(page, genresString).onFailure { return Result.failure(it) }
+        checkCachedMovies(
+            page = page,
+            genresString = genresString,
+            orderString = orderString,
+        )?.let { return Result.success(it) }
 
-        return checkCachedMovies(page, genresString, orderString) ?: fetchAndUpdateCache(
+        return fetchAndUpdateCache(
             performNetworkRequest = {
                 getFilmsService.getFilmListByGenres(
                     genres = genresString,
@@ -155,17 +160,11 @@ class FilmsRepositoryImpl @Inject constructor(
         page: Int,
         genresString: String,
         orderString: String,
-    ): Result<FilmsListDomain>? {
+    ): FilmsListDomain? {
         val cachedMovies = contentCache.filmsCache.filmsListCache.filmsList
         return if (cachedMovies.isNotEmpty() && contentCache.filmsCache.filmsListCache.currentPage == page && contentCache.filmsCache.filmsListCache.currentGenres == genresString && contentCache.filmsCache.filmsListCache.currentOrder == orderString) {
-            Result.success(
-                FilmsListDomain(
-                    cachedMovies,
-                    page, contentCache.filmsCache.filmsListCache.totalPages,
-                    genresString,
-                    orderString
-                )
-            )
-        } else null
+            contentCache.filmsCache.filmsListCache
+        } else
+            null
     }
 }

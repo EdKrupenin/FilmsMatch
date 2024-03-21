@@ -15,7 +15,6 @@ activity = "1.8.2"
 constraintlayout = "2.1.4"
 androidx-navigation = "2.7.7"
 hilt-android = "2.51"
-androidx-hilt = "1.2.0"
 serialization = "1.6.3"
 retrofit = "2.9.0"
 converter-gson = "2.9.0"
@@ -26,8 +25,12 @@ viewpager = "1.0.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
-mockk = "1.12.0"
+
 kotlinx-coroutines-test = "1.7.1"
+junit-jupiter = "5.10.2"
+mockito = "5.11.0"
+kotlin-test = "1.9.22"
+mockito-kotlin = "5.0.0"
 
 
 [libraries]
@@ -44,12 +47,6 @@ androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt-android" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt-android" }
 
-hilt-common = { group = "androidx.hilt", name = "hilt-common", version.ref = "androidx-hilt" }
-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "androidx-hilt" }
-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "androidx-hilt" }
-hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation", version.ref = "androidx-hilt" }
-hilt-navigation-fragment = { group = "androidx.hilt", name = "hilt-navigation-fragment", version.ref = "androidx-hilt" }
-
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converter-gson" }
@@ -57,8 +54,15 @@ logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-intercep
 shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
 picasso = { group = "com.squareup.picasso", name = "picasso", version.ref = "picasso" }
 viewpager = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager" }
-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk"}
+
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin-test" }
+kotlin-test-annotations-common = { group = "org.jetbrains.kotlin", name = "kotlin-test-annotations-common", version.ref = "kotlin-test" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test"}
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-junit-jupiter = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockito" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
 
 
 

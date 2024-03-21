@@ -37,13 +37,11 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-    // Зависимость для интеграции Hilt в приложение Android
+
     implementation(libs.hilt.android)
-    // Плагин kapt для обработки аннотаций Hilt во время компиляции
     kapt(libs.hilt.android.compiler)
 
     implementation(libs.kotlinx.serialization.json)
-
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
@@ -51,7 +49,20 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    testImplementation(libs.junit)
+
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockito.junit.jupiter)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.kotlin.test.annotations.common)
+    testImplementation(libs.kotlinx.coroutines.test)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
